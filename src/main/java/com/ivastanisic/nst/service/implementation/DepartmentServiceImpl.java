@@ -23,9 +23,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDTO save(DepartmentDTO obj) throws Exception {
-        Optional<Department> department_exists = departmentRepository.findByName(obj.getName());
-        if (department_exists.isPresent()) {
-            throw new Exception("Department with name "+ obj.getName()+" already exists");
+        Optional<Department> departmentExists = departmentRepository.findByName(obj.getName());
+        if (departmentExists.isPresent()) {
+            throw new Exception("Department with name " + obj.getName() + " already exists");
         } else {
             Department department = departmentConverter.toEntity(obj);
             department = departmentRepository.save(department);
@@ -39,17 +39,42 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void delete(Long aLong) throws Exception {
-
+    public void delete(Long id) throws Exception {
+        Optional<Department> departmentExists = departmentRepository.findById(id);
+        if (!departmentExists.isPresent())
+            throw new Exception("Department with id " + id + " doesn't exist");
+        else {
+            departmentRepository.deleteById(id);
+        }
     }
 
     @Override
-    public DepartmentDTO findById(Long aLong) throws Exception {
-        return null;
+    public DepartmentDTO findById(Long id) throws Exception {
+        Optional<Department> departmentExists = departmentRepository.findById(id);
+        if (!departmentExists.isPresent()) {
+            throw new Exception("Department with id " + id + " doesn't exist");
+        } else {
+            return departmentConverter.toDTO(departmentExists.get());
+        }
     }
 
     @Override
     public DepartmentDTO update(DepartmentDTO departmentDTO) throws Exception {
         return null;
+    }
+
+    @Override
+    public DepartmentDTO updateById(Long id, DepartmentDTO departmentDTO) throws Exception {
+        Optional<Department> departmentExists = departmentRepository.findById(id);
+        if (!departmentExists.isPresent()) {
+            throw new Exception("Department with id " + id + " doesn't exist");
+        } else {
+            Department existingDepartment = departmentExists.get();
+            Department departmentUpdated = departmentConverter.toEntity(departmentDTO);
+            existingDepartment.setName(departmentUpdated.getName());
+            existingDepartment.setShortName(departmentUpdated.getShortName());
+
+            return departmentConverter.toDTO(departmentRepository.save(existingDepartment));
+        }
     }
 }

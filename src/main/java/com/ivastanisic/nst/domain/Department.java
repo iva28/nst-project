@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
     private Long id;
     @NotEmpty(message = "Department's name cannot be empty!")
     @Column(name = "name")

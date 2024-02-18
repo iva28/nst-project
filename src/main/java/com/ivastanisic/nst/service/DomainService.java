@@ -11,4 +11,5 @@ public interface DomainService <DTO, ID>{
     void delete(ID id) throws Exception;
     DTO findById(ID id) throws Exception;
     DTO update(DTO dto) throws Exception;
+    DTO updateById(ID id, DTO dto) throws Exception;
 }

@@ -31,4 +31,22 @@ public class DepartmentController {
         DepartmentDTO departmentDTO_saved = departmentService.save(departmentDTO);
         return new ResponseEntity<DepartmentDTO>(departmentDTO_saved, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<Void> deleteDepartment(@PathVariable Long id) throws Exception {
+        departmentService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    ResponseEntity<DepartmentDTO> findDepartmentById(@PathVariable Long id) throws  Exception{
+        return new ResponseEntity<DepartmentDTO>(departmentService.findById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable Long id, @Valid @RequestBody DepartmentDTO departmentDTO) throws Exception{
+        DepartmentDTO departmentUpdated = departmentService.updateById(id, departmentDTO);
+        return new ResponseEntity<DepartmentDTO>(departmentUpdated, HttpStatus.ACCEPTED);
+    }
+
 }
