@@ -1,0 +1,6 @@
+CREATE TABLE tbl_department (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  short_name VARCHAR(50),
+  PRIMARY KEY (id)
+);
