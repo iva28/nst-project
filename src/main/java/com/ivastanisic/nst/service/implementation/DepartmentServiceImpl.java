@@ -18,6 +18,7 @@ import java.util.Optional;
 public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private final DepartmentRepository departmentRepository;
+
     @Autowired
     private final DepartmentConverter departmentConverter;
 

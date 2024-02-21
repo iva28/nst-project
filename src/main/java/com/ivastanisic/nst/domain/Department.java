@@ -15,7 +15,7 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     private Long id;
-    @NotEmpty(message = "Department's name cannot be empty!")
+    @NotEmpty(message = "Department's name cannot be empty")
     @Column(name = "name")
     private String name;
     @Column(name = "short_name")

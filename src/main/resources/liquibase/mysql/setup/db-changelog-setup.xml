@@ -2,7 +2,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-
+    <!--Department-->
     <changeSet id="create-department" author="istanisic">
         <sqlFile path="ddl/create-tbl-department.sql" relativeToChangelogFile="true"/>
     </changeSet>
@@ -10,5 +10,15 @@
     <changeSet id="init-department" author="istanisic">
         <sqlFile path="dml/init-tbl-department.sql" relativeToChangelogFile="true"/>
     </changeSet>
+
+    <!--Subject-->
+    <changeSet id="create-subject" author="istanisic">
+        <sqlFile path="ddl/create-tbl-subject.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="init-subject" author="istanisic">
+        <sqlFile path="dml/init-tbl-subject.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 
 </databaseChangeLog>
