@@ -20,5 +20,32 @@
         <sqlFile path="dml/init-tbl-subject.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <!--Academic title-->
+    <changeSet id="create-academic-title" author="istanisic">
+        <sqlFile path="ddl/create-tbl-academic-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="init-academic-title" author="istanisic">
+        <sqlFile path="dml/init-tbl-academic-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <!--Education title-->
+    <changeSet id="create-education-title" author="istanisic">
+        <sqlFile path="ddl/create-tbl-education-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="init-education-title" author="istanisic">
+        <sqlFile path="dml/init-tbl-education-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <!--Scientific field-->
+    <changeSet id="create-scientific-field" author="istanisic">
+        <sqlFile path="ddl/create-tbl-scientific-field.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="init-scientific-field" author="istanisic">
+        <sqlFile path="dml/init-tbl-scientific-field.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 
 </databaseChangeLog>
