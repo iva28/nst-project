@@ -24,6 +24,10 @@ public class Member {
     private String lastName;
 
     @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @ManyToOne
     @JoinColumn(name = "academic_title_id")
     private AcademicTitle academicTitle;
     @ManyToOne
