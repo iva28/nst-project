@@ -47,5 +47,23 @@
         <sqlFile path="dml/init-tbl-scientific-field.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <!--Member-->
+    <changeSet id="create-member" author="istanisic">
+        <sqlFile path="ddl/create-tbl-member.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+<!--    <changeSet id="init-member" author="istanisic">-->
+<!--        <sqlFile path="dml/init-tbl-member.sql" relativeToChangelogFile="true"/>-->
+<!--    </changeSet>-->
+
+    <!--Academic title history-->
+    <changeSet id="create-academic-title-history" author="istanisic">
+        <sqlFile path="ddl/create-tbl-academic-title-history.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+<!--    <changeSet id="init-academic-title-history" author="istanisic">-->
+<!--        <sqlFile path="dml/init-tbl-academic-title-history.sql" relativeToChangelogFile="true"/>-->
+<!--    </changeSet>-->
+
 
 </databaseChangeLog>
