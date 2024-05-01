@@ -2,6 +2,7 @@ package com.ivastanisic.nst.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,10 +21,11 @@ public class Subject {
     @Column(name="name")
     private String name;
 
-    @NotEmpty(message = "Subject must contain espb points")
+    @NotNull(message = "Subject must contain espb points")
     @Column(name="espb")
+
     private int espb;
-    @NotEmpty(message = "Subject must belong to department")
+//    @NotEmpty(message = "Subject must belong to department")
     @ManyToOne
     @JoinColumn(name="department_id")
     private Department department;

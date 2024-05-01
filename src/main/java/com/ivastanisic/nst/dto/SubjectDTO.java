@@ -18,7 +18,7 @@ public class SubjectDTO implements Serializable {
     private String name;
     @NotNull
     private int espb;
-    @NotNull
+//    @NotNull
     private DepartmentDTO departmentDTO;
 
 }
