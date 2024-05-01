@@ -2,7 +2,7 @@ package com.ivastanisic.nst.controller;
 
 import com.ivastanisic.nst.domain.Department;
 import com.ivastanisic.nst.dto.DepartmentDTO;
-import com.ivastanisic.nst.service.implementation.DepartmentServiceImpl;
+import com.ivastanisic.nst.service.abstraction.DepartmentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DepartmentController {
     @Autowired
-    private final DepartmentServiceImpl departmentService;
+    private final DepartmentService departmentService;
 
     @GetMapping
     private ResponseEntity<List<DepartmentDTO>> getAllDepartments() {

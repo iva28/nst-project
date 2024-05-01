@@ -1,7 +1,7 @@
 package com.ivastanisic.nst.controller;
 
 import com.ivastanisic.nst.dto.EducationTitleDTO;
-import com.ivastanisic.nst.service.implementation.EducationTitleServiceImpl;
+import com.ivastanisic.nst.service.abstraction.EducationTitleService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EducationTitleController {
     @Autowired
-    private final EducationTitleServiceImpl educationTitleService;
+    private final EducationTitleService educationTitleService;
     @GetMapping
     private ResponseEntity<List<EducationTitleDTO>> getAllEducationTitle() {
         List<EducationTitleDTO> educationTitleList = educationTitleService.getAll();

@@ -1,7 +1,7 @@
 package com.ivastanisic.nst.controller;
 
 import com.ivastanisic.nst.dto.SubjectDTO;
-import com.ivastanisic.nst.service.implementation.SubjectServiceImpl;
+import com.ivastanisic.nst.service.abstraction.SubjectService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 public class SubjectController {
 
     @Autowired
-    private final SubjectServiceImpl subjectService;
+    private final SubjectService subjectService;
 
     @GetMapping
     private ResponseEntity<List<SubjectDTO>> getAllSubjects() {

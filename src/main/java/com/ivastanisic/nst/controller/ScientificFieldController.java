@@ -1,7 +1,7 @@
 package com.ivastanisic.nst.controller;
 
 import com.ivastanisic.nst.dto.ScientificFieldDTO;
-import com.ivastanisic.nst.service.implementation.ScientificFieldServiceImpl;
+import com.ivastanisic.nst.service.abstraction.ScientificFieldService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ScientificFieldController {
     @Autowired
-    private final ScientificFieldServiceImpl scientificFieldService;
+    private final ScientificFieldService scientificFieldService;
     @GetMapping
     private ResponseEntity<List<ScientificFieldDTO>> getAllScientificField() {
         List<ScientificFieldDTO> scientificFieldDTOList = scientificFieldService.getAll();

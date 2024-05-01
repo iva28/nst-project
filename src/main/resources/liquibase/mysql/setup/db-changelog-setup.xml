@@ -52,9 +52,9 @@
         <sqlFile path="ddl/create-tbl-member.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-<!--    <changeSet id="init-member" author="istanisic">-->
-<!--        <sqlFile path="dml/init-tbl-member.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
+    <changeSet id="init-member" author="istanisic">
+        <sqlFile path="dml/init-tbl-member.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
     <!--Academic title history-->
     <changeSet id="create-academic-title-history" author="istanisic">

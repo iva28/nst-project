@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,5 +39,7 @@ public class Member {
     @JoinColumn(name = "scientific_field_id")
     private ScientificField scientificField;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<AcademicTitleHistory> academicTitleHistoryList;
 
 }

@@ -1,5 +1,6 @@
 package com.ivastanisic.nst.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class AcademicTitleHistory {
     private LocalDate endDate;
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonIgnore
     private Member member;
     @ManyToOne
     @JoinColumn(name = "academic_title_id")
