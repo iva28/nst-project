@@ -1,0 +1,12 @@
+package com.ivastanisic.nst.service.abstraction;
+
+import com.ivastanisic.nst.dto.MemberDTO;
+import com.ivastanisic.nst.service.DomainService;
+
+import java.util.List;
+
+public interface MemberService extends DomainService<MemberDTO, Long> {
+    public List<MemberDTO> getAllMembersByRole(String memberRole) throws Exception;
+
+    List<MemberDTO> getAllMembersInDepartment(Long id) throws Exception;
+}

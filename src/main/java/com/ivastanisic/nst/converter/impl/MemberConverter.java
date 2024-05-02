@@ -28,6 +28,7 @@ public class MemberConverter implements DTOEntityConverter<MemberDTO, Member> {
                 m.getId(),
                 m.getFirstName(),
                 m.getLastName(),
+                m.getRole(),
                 departmentConverter.toDTO(m.getDepartment()),
                 academicTitleConverter.toDTO(m.getAcademicTitle()),
                 educationTitleConverter.toDTO(m.getEducationTitle()),
@@ -38,9 +39,17 @@ public class MemberConverter implements DTOEntityConverter<MemberDTO, Member> {
 
     @Override
     public Member toEntity(MemberDTO dtoM) {
-        return null;
-//        return (dtoM != null) ? new Member(dtoM.getId(), dtoM.getFirstName(),
-//                dtoM.getLastName(), dtoM.getDepartmentDTO(), dtoM.getAcademicTitleDTO(), dtoM.getEducationTitleDTO(),
-//                dtoM.getScientificFieldDTO(), listToEntities(dtoM.getAcademicTitleHistoryDTOS())) : null;
+        return (dtoM != null) ?
+                new Member(
+                dtoM.getId(),
+                dtoM.getFirstName(),
+                dtoM.getLastName(),
+                dtoM.getRole(),
+                departmentConverter.toEntity(dtoM.getDepartmentDTO()),
+                academicTitleConverter.toEntity(dtoM.getAcademicTitleDTO()),
+                educationTitleConverter.toEntity(dtoM.getEducationTitleDTO()),
+                scientificFieldConverter.toEntity(dtoM.getScientificFieldDTO()),
+                academicTitleHistoryConverter.listToEntities(dtoM.getAcademicTitleHistoryDTOS()))
+                : null;
     }
 }

@@ -3,6 +3,7 @@ package com.ivastanisic.nst.converter.impl;
 import com.ivastanisic.nst.converter.DTOEntityConverter;
 import com.ivastanisic.nst.domain.AcademicTitleHistory;
 import com.ivastanisic.nst.dto.AcademicTitleHistoryDTO;
+import com.ivastanisic.nst.role.MemberRole;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class AcademicTitleHistoryConverter implements DTOEntityConverter<Academi
                 ato.getId(),
                 ato.getStartDate(),
                 ato.getEndDate(),
-                new Member(ato.getMemberDTO(), "FAKE", "FAKE", null, null, null, null, new ArrayList<>()),
+                new Member(ato.getMemberDTO(), "FAKE", "FAKE", MemberRole.NORMAL,null, null, null, null, new ArrayList<>()),
                 academicTitleConverter.toEntity(ato.getAcademicTitleDTO()),
                 scientificFieldConverter.toEntity(ato.getScientificFieldDTO()))
                 : null;

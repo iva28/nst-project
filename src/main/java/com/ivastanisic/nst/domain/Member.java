@@ -1,5 +1,6 @@
 package com.ivastanisic.nst.domain;
 
+import com.ivastanisic.nst.role.MemberRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,8 @@ public class Member {
     @Column(name= "last_name")
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;

@@ -1,5 +1,6 @@
 package com.ivastanisic.nst.dto;
 
+import com.ivastanisic.nst.role.MemberRole;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,10 +18,10 @@ public class MemberDTO implements Serializable {
     private String firstName;
     @NotNull
     private String lastName;
+    private MemberRole role;
     private DepartmentDTO departmentDTO;
     private AcademicTitleDTO academicTitleDTO;
     private EducationTitleDTO educationTitleDTO;
     private ScientificFieldDTO scientificFieldDTO;
     private List<AcademicTitleHistoryDTO> academicTitleHistoryDTOS;
-
 }

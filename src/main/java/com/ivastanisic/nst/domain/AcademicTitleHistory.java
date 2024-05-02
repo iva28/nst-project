@@ -1,6 +1,7 @@
 package com.ivastanisic.nst.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ivastanisic.nst.role.MemberRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
