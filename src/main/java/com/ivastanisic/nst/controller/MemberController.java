@@ -1,5 +1,6 @@
 package com.ivastanisic.nst.controller;
 
+import com.ivastanisic.nst.dto.AcademicTitleHistoryDTO;
 import com.ivastanisic.nst.dto.MemberDTO;
 import com.ivastanisic.nst.service.abstraction.MemberService;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,11 @@ public class MemberController {
     public ResponseEntity<List<MemberDTO>> getAllMembersInDepartment(@PathVariable Long id) throws Exception {
         List<MemberDTO> memberDTOS = memberService.getAllMembersInDepartment(id);
         return new ResponseEntity<>(memberDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping("/academic-title-histories/{id}")
+    public ResponseEntity<List<AcademicTitleHistoryDTO>> getAllAcademicTitleHistoryForMemberId(@PathVariable Long id) throws Exception{
+        List<AcademicTitleHistoryDTO> academicTitleHistoryDTOS = memberService.getAllAcademicTitleHistoryForMemberId(id);
+        return new ResponseEntity<>(academicTitleHistoryDTOS, HttpStatus.OK);
     }
 }

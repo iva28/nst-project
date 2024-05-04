@@ -61,9 +61,9 @@
         <sqlFile path="ddl/create-tbl-academic-title-history.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-<!--    <changeSet id="init-academic-title-history" author="istanisic">-->
-<!--        <sqlFile path="dml/init-tbl-academic-title-history.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
+    <changeSet id="init-academic-title-history" author="istanisic">
+        <sqlFile path="dml/init-tbl-academic-title-history.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
 
 </databaseChangeLog>

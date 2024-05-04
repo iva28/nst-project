@@ -1,8 +1,12 @@
 package com.ivastanisic.nst.service.implementation;
 
+import com.ivastanisic.nst.converter.impl.AcademicTitleHistoryConverter;
 import com.ivastanisic.nst.converter.impl.MemberConverter;
 import com.ivastanisic.nst.domain.Department;
+import com.ivastanisic.nst.domain.Member;
+import com.ivastanisic.nst.dto.AcademicTitleHistoryDTO;
 import com.ivastanisic.nst.dto.MemberDTO;
+import com.ivastanisic.nst.repository.AcademicTitleHistoryRepository;
 import com.ivastanisic.nst.repository.DepartmentRepository;
 import com.ivastanisic.nst.repository.MemberRepository;
 import com.ivastanisic.nst.role.MemberRole;
@@ -25,6 +29,10 @@ public class MemberServiceImpl implements MemberService {
     private final MemberConverter memberConverter;
     @Autowired
     private final DepartmentRepository departmentRepository;
+    @Autowired
+    private final AcademicTitleHistoryRepository academicTitleHistoryRepository;
+    @Autowired
+    private final AcademicTitleHistoryConverter academicTitleHistoryConverter;
 
     @Override
     public MemberDTO save(MemberDTO obj) throws Exception {
@@ -69,10 +77,19 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberDTO> getAllMembersInDepartment(Long id) throws Exception {
         Optional<Department> department = departmentRepository.findById(id);
-        if(department.isEmpty()) {
-            throw new Exception("Department with id "+ id+" doesn't exist");
+        if (department.isEmpty()) {
+            throw new Exception("Department with id " + id + " doesn't exist");
         }
         System.out.println(department.get());
         return memberConverter.listToDTO(memberRepository.findByDepartmentId(id));
+    }
+
+    @Override
+    public List<AcademicTitleHistoryDTO> getAllAcademicTitleHistoryForMemberId(Long id) throws Exception {
+        Optional<Member> member = memberRepository.findById(id);
+        if (member.isEmpty()) {
+            throw new Exception("Member with id "+ id+" doesn't exist");
+        }
+        return  academicTitleHistoryConverter.listToDTO(academicTitleHistoryRepository.findByMemberId(id));
     }
 }

@@ -1,5 +1,6 @@
 package com.ivastanisic.nst.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ivastanisic.nst.role.MemberRole;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberDTO implements Serializable {
+    @JsonIgnore
     private Long id;
     @NotNull
     private String firstName;

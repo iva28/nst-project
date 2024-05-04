@@ -45,4 +45,5 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<AcademicTitleHistory> academicTitleHistoryList;
 
+
 }

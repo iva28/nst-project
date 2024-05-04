@@ -1,5 +1,6 @@
 package com.ivastanisic.nst.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AcademicTitleHistoryDTO implements Serializable {
+    @JsonIgnore
     private Long id;
     @NotNull
     private LocalDate startDate;
