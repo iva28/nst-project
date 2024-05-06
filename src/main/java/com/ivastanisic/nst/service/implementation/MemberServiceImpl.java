@@ -56,8 +56,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void delete(Long aLong) throws Exception {
+    public void delete(Long id) throws Exception {
+        if (id == null) {
+            throw new Exception("Id can't be null");
+        }
 
+        Optional<Member> member = memberRepository.findById(id);
+        if (member.isEmpty()) {
+            throw new Exception("Member with id " + id +" doesn't exist. You can't delete it");
+        }
+
+        if (member.get().getRole() == MemberRole.SECRETARY || member.get().getRole() == MemberRole.DIRECTOR) {
+            throw new Exception("You can't delete secretary or director. Fill their roles first");
+        }
+
+        memberRepository.deleteById(id);
     }
 
     @Override
@@ -126,47 +139,33 @@ public class MemberServiceImpl implements MemberService {
 
         DepartmentDTO departmentDTO = departmentService.findByName(memberDTO.getDepartmentDTO().getShortName());
         if (departmentDTO == null) {
-            DepartmentDTO savedDepartmentDTO = departmentService.save(memberDTO.getDepartmentDTO());
-            memberDTO.setDepartmentDTO(savedDepartmentDTO);
-            System.out.println("No existing department, saved " + savedDepartmentDTO);
+            throw new Exception("Department doesn't exist");
         } else {
-            System.out.println("Department exists " + departmentDTO);
             memberDTO.setDepartmentDTO(departmentDTO);
         }
 
         AcademicTitleDTO academicTitleDTO = academicTitleService.findByName(memberDTO.getAcademicTitleDTO().getName());
         if (academicTitleDTO == null) {
-            AcademicTitleDTO savedAcademicTitleDTO = academicTitleService.save(memberDTO.getAcademicTitleDTO());
-            memberDTO.setAcademicTitleDTO(savedAcademicTitleDTO);
-            System.out.println("No existing academic title, saved " + savedAcademicTitleDTO);
+            throw new Exception("Academic title doesn't exist");
         } else {
-            System.out.println("Academic title exists " + academicTitleDTO);
             memberDTO.setAcademicTitleDTO(academicTitleDTO);
         }
 
         EducationTitleDTO educationTitleDTO = educationTitleService.findByName(memberDTO.getEducationTitleDTO().getName());
         if (educationTitleDTO == null) {
-            EducationTitleDTO savedEducationTitleDTO = educationTitleService.save(memberDTO.getEducationTitleDTO());
-            memberDTO.setEducationTitleDTO(savedEducationTitleDTO);
-            System.out.println("No existing education tile, saved " + savedEducationTitleDTO);
+            throw new Exception("Education title doesn't exist");
         } else {
-            System.out.println("Education title exists " + educationTitleDTO);
             memberDTO.setEducationTitleDTO(educationTitleDTO);
         }
 
         ScientificFieldDTO scientificFieldDTO = scientificFieldService.findByName(memberDTO.getScientificFieldDTO().getName());
         if (scientificFieldDTO == null) {
-            ScientificFieldDTO savedScientificFieldDTO = scientificFieldService.save(memberDTO.getScientificFieldDTO());
-            memberDTO.setScientificFieldDTO(savedScientificFieldDTO);
-            System.out.println("No existing scientific field, saved " + savedScientificFieldDTO);
+            throw new Exception("Scientific field doesn't exist");
         } else {
-            System.out.println("Scientific field exists " + scientificFieldDTO);
             memberDTO.setScientificFieldDTO(scientificFieldDTO);
         }
 
         memberDTO.setAcademicTitleHistoryDTOS(new ArrayList<>());
-        System.out.println(memberDTO);
-        System.out.println(memberConverter.toEntity(memberDTO));
 
         //        academic title history save
         Member savedMember = memberRepository.save(memberConverter.toEntity(memberDTO));
@@ -177,7 +176,8 @@ public class MemberServiceImpl implements MemberService {
                 savedMember.getId(),
                 memberDTO.getAcademicTitleDTO(),
                 memberDTO.getScientificFieldDTO()));
-
         return memberConverter.toDTO(savedMember);
     }
+
+
 }
