@@ -19,10 +19,11 @@ public class AcademicTitleHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Academic title must have start date")
+//    @NotEmpty(message = "Academic title must have start date")
     @Column(name = "start_date")
     private LocalDate startDate;
-    @NotEmpty(message = "Academic title must have end date")
+
+    //    @NotEmpty(message = "Academic title must have end date")
     @Column(name = "end_date")
     private LocalDate endDate;
     @ManyToOne

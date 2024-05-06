@@ -57,4 +57,11 @@ public class EducationTitleServiceImpl implements EducationTitleService {
     public EducationTitleDTO updateById(Long aLong, EducationTitleDTO educationTitleDTO) throws Exception {
         return null;
     }
+
+    @Override
+    public EducationTitleDTO findByName(String name) throws Exception{
+        if (name == null)
+            throw new Exception("Name of education title can't be empty");
+        return educationTitleConverter.toDTO(educationTitleRepository.findByName(name).get());
+    }
 }

@@ -1,19 +1,18 @@
 package com.ivastanisic.nst.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.NotNull;
+import com.ivastanisic.nst.role.MemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EducationTitleDTO implements Serializable {
-
+public class MemberRoleChangeDTO implements Serializable {
     @JsonIgnore
     private Long id;
-    @NotNull
-    private String name;
+    private MemberRole role;
 }

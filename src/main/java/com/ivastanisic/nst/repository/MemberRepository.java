@@ -9,10 +9,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByRole(MemberRole memberRole);
 //    @Query("SELECT e FROM Member e WHERE e.department.id = :department")
 //    List<Member> findDepartmentId(@Param("department") Long id);
     List<Member> findByDepartmentId(Long id);
+    Optional<Member> findByFirstNameAndLastNameAndDepartmentShortName(String firstName, String lastName,String shortName);
 }

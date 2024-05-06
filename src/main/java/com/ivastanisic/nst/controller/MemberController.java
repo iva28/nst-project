@@ -3,6 +3,7 @@ package com.ivastanisic.nst.controller;
 import com.ivastanisic.nst.dto.AcademicTitleHistoryDTO;
 import com.ivastanisic.nst.dto.MemberDTO;
 import com.ivastanisic.nst.service.abstraction.MemberService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,11 @@ public class MemberController {
     public ResponseEntity<List<AcademicTitleHistoryDTO>> getAllAcademicTitleHistoryForMemberId(@PathVariable Long id) throws Exception{
         List<AcademicTitleHistoryDTO> academicTitleHistoryDTOS = memberService.getAllAcademicTitleHistoryForMemberId(id);
         return new ResponseEntity<>(academicTitleHistoryDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping("/save-member")
+    public ResponseEntity<MemberDTO> saveMember(@RequestBody @Valid MemberDTO memberDTO) throws Exception {
+        MemberDTO savedMember = memberService.saveMember(memberDTO);
+        return ResponseEntity.ok(savedMember);
     }
 }

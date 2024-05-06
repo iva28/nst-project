@@ -1,7 +1,7 @@
 CREATE TABLE tbl_academic_title_history(
     id BIGINT NOT NULL AUTO_INCREMENT,
     start_date date NOT NULL,
-    end_date date NOT NULL,
+    end_date date,
     member_id BIGINT,
     academic_title_id BIGINT,
     scientific_field_id BIGINT,

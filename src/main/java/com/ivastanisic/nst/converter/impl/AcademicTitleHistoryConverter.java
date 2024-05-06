@@ -18,6 +18,7 @@ public class AcademicTitleHistoryConverter implements DTOEntityConverter<Academi
     private final AcademicTitleConverter academicTitleConverter;
     @Autowired
     private final ScientificFieldConverter scientificFieldConverter;
+
     @Override
     public AcademicTitleHistoryDTO toDTO(AcademicTitleHistory at) {
         return (at != null) ?

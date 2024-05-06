@@ -1,6 +1,7 @@
 package com.ivastanisic.nst.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ivastanisic.nst.role.MemberRole;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,14 +13,14 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AcademicTitleHistoryDTO implements Serializable {
+public class MemberRoleHistoryDTO implements Serializable {
     @JsonIgnore
     private Long id;
+    private MemberDTO memberDTO;
+    private DepartmentDTO departmentDTO;
+    private MemberRole role;
     @NotNull
     private LocalDate startDate;
-//    @NotNull
+    @NotNull
     private LocalDate endDate;
-    private Long memberDTO;
-    private AcademicTitleDTO academicTitleDTO;
-    private ScientificFieldDTO scientificFieldDTO;
 }

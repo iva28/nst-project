@@ -24,7 +24,7 @@ public class ScientificFieldServiceImpl implements ScientificFieldService {
     public ScientificFieldDTO save(ScientificFieldDTO obj) throws Exception {
         Optional<ScientificField> scientificField = scientificFieldRepository.findByName(obj.getName());
         if (scientificField.isPresent())
-            throw new Exception("Scientific field with name "+obj.getName()+" doesn't exist");
+            throw new Exception("Scientific field with name " + obj.getName() + " doesn't exist");
         ScientificField savedScientificField = scientificFieldRepository.save(scientificFieldConverter.toEntity(obj));
         return scientificFieldConverter.toDTO(savedScientificField);
     }
@@ -38,7 +38,7 @@ public class ScientificFieldServiceImpl implements ScientificFieldService {
     public void delete(Long id) throws Exception {
         Optional<ScientificField> scientificField = scientificFieldRepository.findById(id);
         if (scientificField.isEmpty())
-            throw new Exception("Scientific field with id: "+id+" doesn't exist");
+            throw new Exception("Scientific field with id: " + id + " doesn't exist");
 
         scientificFieldRepository.deleteById(id);
     }
@@ -56,5 +56,12 @@ public class ScientificFieldServiceImpl implements ScientificFieldService {
     @Override
     public ScientificFieldDTO updateById(Long aLong, ScientificFieldDTO scientificFieldDTO) throws Exception {
         return null;
+    }
+
+    @Override
+    public ScientificFieldDTO findByName(String name) throws Exception {
+        if (name == null)
+            throw new Exception("Name of scientific field can't be empty");
+        return scientificFieldConverter.toDTO(scientificFieldRepository.findByName(name).get());
     }
 }

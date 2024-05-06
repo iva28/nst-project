@@ -1,5 +1,6 @@
 package com.ivastanisic.nst.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +13,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class DepartmentDTO implements Serializable {
 
+    @JsonIgnore
     private Long id;
-    @NotNull
+//    @NotNull
     private String name;
     private String shortName;
 

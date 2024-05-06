@@ -6,5 +6,5 @@ import com.ivastanisic.nst.service.DomainService;
 import java.util.List;
 
 public interface AcademicTitleHistoryService extends DomainService<AcademicTitleHistoryDTO, Long> {
-    public List<AcademicTitleHistoryDTO> getAllByMemberId(Long id);
+    List<AcademicTitleHistoryDTO> getAllByMemberId(Long id);
 }

@@ -76,4 +76,12 @@ public class DepartmentServiceImpl implements DepartmentService {
             return departmentConverter.toDTO(departmentRepository.save(existingDepartment));
         }
     }
+
+    @Override
+    public DepartmentDTO findByName(String name) throws Exception {
+        if (name == null)
+            throw new Exception("Name of department can't be empty");
+        return departmentConverter.toDTO(departmentRepository.findByShortName(name).get());
+    }
+
 }

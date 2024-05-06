@@ -32,6 +32,10 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional
     public SubjectDTO save(SubjectDTO obj) throws Exception {
+        if (obj == null) {
+            throw new Exception("Subject can;t be empty");
+        }
+
         if (obj.getDepartmentDTO().getId() == null) {
             throw new Exception("Subject must belong to a department");
         }
@@ -46,7 +50,7 @@ public class SubjectServiceImpl implements SubjectService {
             throw new Exception("Subject with this id already exists");
 
         return subjectConverter.toDTO(subjectRepository.save(subjectConverter.toEntity(obj)));
-}
+    }
 
     @Override
     public List<SubjectDTO> getAll() {
@@ -57,7 +61,7 @@ public class SubjectServiceImpl implements SubjectService {
     public void delete(Long id) throws Exception {
         Optional<Subject> subject = subjectRepository.findById(id);
         if (subject.isEmpty())
-            throw new Exception("Subject with id "+ id + " doesn't exist, you can not delete it");
+            throw new Exception("Subject with id " + id + " doesn't exist, you can not delete it");
 
         subjectRepository.deleteById(id);
     }
@@ -78,6 +82,11 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public SubjectDTO updateById(Long aLong, SubjectDTO subjectDTO) throws Exception {
+        return null;
+    }
+
+    @Override
+    public SubjectDTO findByName(String name) throws Exception {
         return null;
     }
 }

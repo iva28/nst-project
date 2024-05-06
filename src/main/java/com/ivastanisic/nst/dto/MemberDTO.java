@@ -25,5 +25,6 @@ public class MemberDTO implements Serializable {
     private AcademicTitleDTO academicTitleDTO;
     private EducationTitleDTO educationTitleDTO;
     private ScientificFieldDTO scientificFieldDTO;
+    @JsonIgnore
     private List<AcademicTitleHistoryDTO> academicTitleHistoryDTOS;
 }
