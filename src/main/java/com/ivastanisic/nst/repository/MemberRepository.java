@@ -18,4 +18,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByDepartmentId(Long id);
     Optional<Member> findByFirstNameAndLastNameAndDepartmentShortName(String firstName, String lastName,String shortName);
     List<Member> findByAcademicTitleName(String name);
+
+    Optional<Member> findByRoleAndDepartmentShortName(MemberRole role, String shortName);
 }

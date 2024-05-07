@@ -20,4 +20,6 @@ public interface MemberService extends DomainService<MemberDTO, Long> {
     MemberDTO updateMemberAcademicTitle(Long id, AcademicTitleDTO academicTitleDTO) throws Exception;
 
     List<MemberDTO> getAllByAcedemicTitle(String name) throws Exception;
+
+    MemberDTO updateMemberRole(Long id, MemberRoleChangeDTO roleChangeDTO) throws Exception;
 }

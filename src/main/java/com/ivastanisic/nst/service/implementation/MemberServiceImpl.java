@@ -240,5 +240,42 @@ public class MemberServiceImpl implements MemberService {
         return memberConverter.listToDTO(memberRepository.findByAcademicTitleName(name));
     }
 
+    @Override
+    @Transactional
+    public MemberDTO updateMemberRole(Long id, MemberRoleChangeDTO roleChangeDTO) throws Exception {
+        if (id == null) {
+            throw new Exception("Member id can't be null");
+        }
+
+        Optional<Member> memberExists = memberRepository.findById(id);
+        if (memberExists.isEmpty()) {
+            throw new Exception("Member doesn't exist");
+        }
+
+        if (roleChangeDTO == null) {
+            throw new Exception("Role to which the member role will change, can't be null");
+        }
+
+        boolean roles = Arrays.stream(MemberRole.values()).anyMatch(memberRole -> memberRole == roleChangeDTO.getRole());
+        if (!roles) {
+            throw new Exception("Role "+roleChangeDTO+" doesn't exist");
+        }
+
+        if (roleChangeDTO.getRole() == MemberRole.NORMAL) {
+            throw new Exception("This endpoint is for handling director/secretary changes only");
+        }
+
+        final Member member = memberExists.get();
+        Optional<Member> memberWithRole = memberRepository.findByRoleAndDepartmentShortName(
+                roleChangeDTO.getRole(),
+                member.getDepartment().getShortName());
+
+        if (memberWithRole.isEmpty()) {
+            throw new Exception("Nema takvog");
+        }
+
+        return null;
+    }
+
 
 }

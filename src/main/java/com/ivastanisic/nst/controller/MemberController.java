@@ -51,12 +51,16 @@ public class MemberController {
         return new ResponseEntity<>("Member with id " + id + " deleted", HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/update-academic-title/{id}")
     public ResponseEntity<MemberDTO> updateMemberAcademicTitle(@PathVariable Long id, @RequestBody AcademicTitleDTO academicTitleDTO) throws Exception {
         MemberDTO updatedMember = memberService.updateMemberAcademicTitle(id, academicTitleDTO);
         return ResponseEntity.ok(updatedMember);
     }
 
+    @PatchMapping("/update-role/{id}")
+    public ResponseEntity<MemberDTO> updateMemberRole(@PathVariable Long id, @RequestBody MemberRoleChangeDTO roleChangeDTO) throws Exception {
+        return ResponseEntity.ok(memberService.updateMemberRole(id, roleChangeDTO));
+    }
     @GetMapping("/member-id/{id}")
     public ResponseEntity<MemberDTO> getByMemberId(@PathVariable Long id) throws  Exception{
         return ResponseEntity.ok(memberService.findById(id));
@@ -66,5 +70,6 @@ public class MemberController {
     public ResponseEntity<List<MemberDTO>> getAllByAcedemicTitle(@RequestParam(name = "name") String name) throws Exception {
         return ResponseEntity.ok(memberService.getAllByAcedemicTitle(name));
     }
+
 
 }
