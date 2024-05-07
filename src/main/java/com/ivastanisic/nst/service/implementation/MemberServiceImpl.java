@@ -1,15 +1,9 @@
 package com.ivastanisic.nst.service.implementation;
 
 import com.ivastanisic.nst.converter.impl.*;
-import com.ivastanisic.nst.domain.AcademicTitle;
-import com.ivastanisic.nst.domain.AcademicTitleHistory;
-import com.ivastanisic.nst.domain.Department;
-import com.ivastanisic.nst.domain.Member;
+import com.ivastanisic.nst.domain.*;
 import com.ivastanisic.nst.dto.*;
-import com.ivastanisic.nst.repository.AcademicTitleHistoryRepository;
-import com.ivastanisic.nst.repository.AcademicTitleRepository;
-import com.ivastanisic.nst.repository.DepartmentRepository;
-import com.ivastanisic.nst.repository.MemberRepository;
+import com.ivastanisic.nst.repository.*;
 import com.ivastanisic.nst.role.MemberRole;
 import com.ivastanisic.nst.service.abstraction.*;
 import jakarta.transaction.Transactional;
@@ -50,6 +44,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private final AcademicTitleRepository academicTitleRepository;
+
+    @Autowired
+    private final MemberRoleHistoryRepository memberRoleHistoryRepository;
 
     @Override
     public MemberDTO save(MemberDTO obj) throws Exception {
@@ -258,7 +255,7 @@ public class MemberServiceImpl implements MemberService {
 
         boolean roles = Arrays.stream(MemberRole.values()).anyMatch(memberRole -> memberRole == roleChangeDTO.getRole());
         if (!roles) {
-            throw new Exception("Role "+roleChangeDTO+" doesn't exist");
+            throw new Exception("Role " + roleChangeDTO + " doesn't exist");
         }
 
         if (roleChangeDTO.getRole() == MemberRole.NORMAL) {
@@ -270,11 +267,33 @@ public class MemberServiceImpl implements MemberService {
                 roleChangeDTO.getRole(),
                 member.getDepartment().getShortName());
 
-        if (memberWithRole.isEmpty()) {
-            throw new Exception("Nema takvog");
+
+        if (!memberWithRole.isEmpty()) {
+//            Saving member role history
+            Member oldRoleHolder = memberWithRole.get();
+
+            MemberRoleHistory history = new MemberRoleHistory(
+                    null,
+                    roleChangeDTO.getRole(),
+                    oldRoleHolder.getStartDate(),
+                    LocalDate.now(),
+                    oldRoleHolder,
+                    oldRoleHolder.getDepartment()
+            );
+
+            memberRoleHistoryRepository.save(history);
+
+            oldRoleHolder.setRole(MemberRole.NORMAL);
+            oldRoleHolder.setStartDate(LocalDate.now());
+
+//            saving old role holder
+            memberRepository.save(oldRoleHolder);
         }
 
-        return null;
+        member.setRole(roleChangeDTO.getRole());
+        member.setStartDate(LocalDate.now());
+
+        return memberConverter.toDTO(memberRepository.save(member));
     }
 
 
