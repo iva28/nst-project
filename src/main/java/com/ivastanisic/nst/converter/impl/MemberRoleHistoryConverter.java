@@ -20,12 +20,12 @@ public class MemberRoleHistoryConverter implements DTOEntityConverter<MemberRole
         return (entity != null) ?
                 new MemberRoleHistoryDTO(
                         entity.getId(),
-                        memberConverter.toDTO(entity.getMember()),
-                        departmentConverter.toDTO(entity.getDepartment()),
                         entity.getRole(),
                         entity.getStartDate(),
-                        entity.getEndDate()
-                )
+                        entity.getEndDate(),
+                        memberConverter.toDTO(entity.getMember()),
+                        departmentConverter.toDTO(entity.getDepartment())
+                        )
                 : null;
     }
 
@@ -34,11 +34,11 @@ public class MemberRoleHistoryConverter implements DTOEntityConverter<MemberRole
         return (dtoObj != null) ?
                 new MemberRoleHistory(
                         dtoObj.getId(),
-                        memberConverter.toEntity(dtoObj.getMemberDTO()),
-                        departmentConverter.toEntity(dtoObj.getDepartmentDTO()),
                         dtoObj.getRole(),
                         dtoObj.getStartDate(),
-                        dtoObj.getEndDate()
+                        dtoObj.getEndDate(),
+                        memberConverter.toEntity(dtoObj.getMemberDTO()),
+                        departmentConverter.toEntity(dtoObj.getDepartmentDTO())
                 )
                 : null;
     }

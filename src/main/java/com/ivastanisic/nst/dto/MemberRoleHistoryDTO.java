@@ -16,11 +16,11 @@ import java.time.LocalDate;
 public class MemberRoleHistoryDTO implements Serializable {
     @JsonIgnore
     private Long id;
-    private MemberDTO memberDTO;
-    private DepartmentDTO departmentDTO;
     private MemberRole role;
     @NotNull
     private LocalDate startDate;
     @NotNull
     private LocalDate endDate;
+    private MemberDTO memberDTO;
+    private DepartmentDTO departmentDTO;
 }

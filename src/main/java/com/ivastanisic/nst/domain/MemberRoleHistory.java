@@ -19,12 +19,6 @@ public class MemberRoleHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
     @Enumerated(EnumType.STRING)
     private MemberRole role;
     @Column(name = "start_date")
@@ -33,5 +27,12 @@ public class MemberRoleHistory {
     @Column(name = "end_date")
     @NotNull
     private LocalDate endDate;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
 
 }

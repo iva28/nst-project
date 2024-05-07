@@ -65,5 +65,14 @@
         <sqlFile path="dml/init-tbl-academic-title-history.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <!--Member role history-->
+    <changeSet id="create-member-role-history" author="istanisic">
+        <sqlFile path="ddl/create-tbl-member-history.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+<!--    <changeSet id="init-member-role-history" author="istanisic">-->
+<!--        <sqlFile path="dml/init-tbl-member-history.sql" relativeToChangelogFile="true"/>-->
+<!--    </changeSet>-->
+
 
 </databaseChangeLog>
