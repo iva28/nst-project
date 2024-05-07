@@ -17,4 +17,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 //    List<Member> findDepartmentId(@Param("department") Long id);
     List<Member> findByDepartmentId(Long id);
     Optional<Member> findByFirstNameAndLastNameAndDepartmentShortName(String firstName, String lastName,String shortName);
+    List<Member> findByAcademicTitleName(String name);
 }

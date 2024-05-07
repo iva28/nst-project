@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
 
         Optional<Member> member = memberRepository.findById(id);
         if (member.isEmpty()) {
-            throw new Exception("Member with id " + id +" doesn't exist. You can't delete it");
+            throw new Exception("Member with id " + id + " doesn't exist. You can't delete it");
         }
 
         if (member.get().getRole() == MemberRole.SECRETARY || member.get().getRole() == MemberRole.DIRECTOR) {
@@ -227,8 +227,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<MemberDTO> getAllByAcedemicTitle(AcademicTitleDTO academicTitleDTO) throws Exception {
-        return null;
+    public List<MemberDTO> getAllByAcedemicTitle(String name) throws Exception {
+        if (name == null) {
+            throw new Exception("Academic title can't be null");
+        }
+
+        Optional<AcademicTitle> academicTitle = academicTitleRepository.findByName(name);
+        if (academicTitle.isEmpty()) {
+            throw new Exception("Academic title doesn't exist");
+        }
+
+        return memberConverter.listToDTO(memberRepository.findByAcademicTitleName(name));
     }
 
 

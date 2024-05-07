@@ -63,8 +63,8 @@ public class MemberController {
     }
 
     @GetMapping("/academic-title")
-    public ResponseEntity<List<MemberDTO>> getAllByAcedemicTitle(@RequestBody AcademicTitleDTO academicTitleDTO) throws Exception {
-        return ResponseEntity.ok(memberService.getAllByAcedemicTitle(academicTitleDTO));
+    public ResponseEntity<List<MemberDTO>> getAllByAcedemicTitle(@RequestParam(name = "name") String name) throws Exception {
+        return ResponseEntity.ok(memberService.getAllByAcedemicTitle(name));
     }
 
 }
