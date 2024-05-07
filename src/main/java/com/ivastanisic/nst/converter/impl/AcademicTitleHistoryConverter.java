@@ -23,11 +23,11 @@ public class AcademicTitleHistoryConverter implements DTOEntityConverter<Academi
     public AcademicTitleHistoryDTO toDTO(AcademicTitleHistory at) {
         return (at != null) ?
                 new AcademicTitleHistoryDTO(at.getId(),
-                at.getStartDate(),
-                at.getEndDate(),
-                (at.getMember() == null) ? null : at.getMember().getId(),
-                academicTitleConverter.toDTO(at.getAcademicTitle()),
-                scientificFieldConverter.toDTO(at.getScientificField()))
+                        at.getStartDate(),
+                        at.getEndDate(),
+                        (at.getMember() == null) ? null : at.getMember().getId(),
+                        academicTitleConverter.toDTO(at.getAcademicTitle()),
+                        scientificFieldConverter.toDTO(at.getScientificField()))
                 : null;
     }
 
@@ -35,12 +35,12 @@ public class AcademicTitleHistoryConverter implements DTOEntityConverter<Academi
     public AcademicTitleHistory toEntity(AcademicTitleHistoryDTO ato) {
         return (ato != null) ?
                 new AcademicTitleHistory(
-                ato.getId(),
-                ato.getStartDate(),
-                ato.getEndDate(),
-                new Member(ato.getMemberDTO(), "FAKE", "FAKE", MemberRole.NORMAL,null, null, null, null, new ArrayList<>()),
-                academicTitleConverter.toEntity(ato.getAcademicTitleDTO()),
-                scientificFieldConverter.toEntity(ato.getScientificFieldDTO()))
+                        ato.getId(),
+                        ato.getStartDate(),
+                        ato.getEndDate(),
+                        new Member(ato.getMemberDTO(), "FAKE", "FAKE", null, MemberRole.NORMAL, null, null, null, null, new ArrayList<>()),
+                        academicTitleConverter.toEntity(ato.getAcademicTitleDTO()),
+                        scientificFieldConverter.toEntity(ato.getScientificFieldDTO()))
                 : null;
     }
 }

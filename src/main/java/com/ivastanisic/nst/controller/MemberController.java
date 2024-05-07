@@ -1,7 +1,9 @@
 package com.ivastanisic.nst.controller;
 
+import com.ivastanisic.nst.dto.AcademicTitleDTO;
 import com.ivastanisic.nst.dto.AcademicTitleHistoryDTO;
 import com.ivastanisic.nst.dto.MemberDTO;
+import com.ivastanisic.nst.dto.MemberRoleChangeDTO;
 import com.ivastanisic.nst.service.abstraction.MemberService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,11 +20,13 @@ import java.util.List;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+
     @GetMapping()
-    public ResponseEntity<List<MemberDTO>> getAllMembersByRole(@RequestParam(name="role") String role) throws Exception {
+    public ResponseEntity<List<MemberDTO>> getAllMembersByRole(@RequestParam(name = "role") String role) throws Exception {
         List<MemberDTO> memberDTOS = memberService.getAllMembersByRole(role);
         return new ResponseEntity<>(memberDTOS, HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<List<MemberDTO>> getAllMembersInDepartment(@PathVariable Long id) throws Exception {
         List<MemberDTO> memberDTOS = memberService.getAllMembersInDepartment(id);
@@ -30,7 +34,7 @@ public class MemberController {
     }
 
     @GetMapping("/academic-title-histories/{id}")
-    public ResponseEntity<List<AcademicTitleHistoryDTO>> getAllAcademicTitleHistoryForMemberId(@PathVariable Long id) throws Exception{
+    public ResponseEntity<List<AcademicTitleHistoryDTO>> getAllAcademicTitleHistoryForMemberId(@PathVariable Long id) throws Exception {
         List<AcademicTitleHistoryDTO> academicTitleHistoryDTOS = memberService.getAllAcademicTitleHistoryForMemberId(id);
         return new ResponseEntity<>(academicTitleHistoryDTOS, HttpStatus.OK);
     }
@@ -40,9 +44,27 @@ public class MemberController {
         MemberDTO savedMember = memberService.saveMember(memberDTO);
         return ResponseEntity.ok(savedMember);
     }
+
     @DeleteMapping("/delete-member/{id}")
-    ResponseEntity<String> deleteMember(@PathVariable Long id) throws Exception{
+    ResponseEntity<String> deleteMember(@PathVariable Long id) throws Exception {
         memberService.delete(id);
-        return new ResponseEntity<>("Member with id "+ id +" deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Member with id " + id + " deleted", HttpStatus.OK);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<MemberDTO> updateMemberAcademicTitle(@PathVariable Long id, @RequestBody AcademicTitleDTO academicTitleDTO) throws Exception {
+        MemberDTO updatedMember = memberService.updateMemberAcademicTitle(id, academicTitleDTO);
+        return ResponseEntity.ok(updatedMember);
+    }
+
+    @GetMapping("/member-id/{id}")
+    public ResponseEntity<MemberDTO> getByMemberId(@PathVariable Long id) throws  Exception{
+        return ResponseEntity.ok(memberService.findById(id));
+    }
+
+    @GetMapping("/academic-title")
+    public ResponseEntity<List<MemberDTO>> getAllByAcedemicTitle(@RequestBody AcademicTitleDTO academicTitleDTO) throws Exception {
+        return ResponseEntity.ok(memberService.getAllByAcedemicTitle(academicTitleDTO));
+    }
+
 }

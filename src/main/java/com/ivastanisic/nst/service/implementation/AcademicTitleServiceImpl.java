@@ -19,6 +19,7 @@ public class AcademicTitleServiceImpl implements AcademicTitleService {
     private final AcademicTitleRepository academicTitleRepository;
     @Autowired
     private final AcademicTitleConverter academicTitleConverter;
+
     @Override
     public AcademicTitleDTO save(AcademicTitleDTO obj) throws Exception {
         System.out.println("Saving academic title");
@@ -41,7 +42,7 @@ public class AcademicTitleServiceImpl implements AcademicTitleService {
     public void delete(Long id) throws Exception {
         Optional<AcademicTitle> academicTitle = academicTitleRepository.findById(id);
         if (!academicTitle.isPresent())
-            throw new Exception("Academic title with id " + id+ " doesn't exits");
+            throw new Exception("Academic title with id " + id + " doesn't exits");
 
         academicTitleRepository.deleteById(id);
     }
@@ -62,9 +63,10 @@ public class AcademicTitleServiceImpl implements AcademicTitleService {
     }
 
     @Override
-    public AcademicTitleDTO findByName(String name) throws Exception{
+    public AcademicTitleDTO findByName(String name) throws Exception {
         if (name == null)
             throw new Exception("Name of academic title can't be empty");
+
         return academicTitleConverter.toDTO(academicTitleRepository.findByName(name).get());
     }
 }

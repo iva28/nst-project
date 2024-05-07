@@ -3,10 +3,12 @@ package com.ivastanisic.nst.domain;
 import com.ivastanisic.nst.role.MemberRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -23,8 +25,12 @@ public class Member {
     @Column(name = "first_name")
     private String firstName;
     @NotEmpty(message = "Member must have last name")
-    @Column(name= "last_name")
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "start_date")
+    @PastOrPresent
+    private LocalDate startDate;
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;

@@ -2,6 +2,7 @@ CREATE TABLE tbl_member(
      id BIGINT NOT NULL AUTO_INCREMENT,
      first_name VARCHAR(30) NOT NULL,
      last_name VARCHAR(50) NOT NULL,
+     start_date DATE,
      role VARCHAR(30),
      department_id BIGINT,
      academic_title_id BIGINT,

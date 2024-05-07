@@ -39,5 +39,9 @@ public class AcademicTitleController {
         academicTitleService.delete(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/academic-title-name/{name}")
+    private ResponseEntity<AcademicTitleDTO> getByName(@PathVariable String name) throws Exception{
+        return ResponseEntity.ok(academicTitleService.findByName(name));
+    }
 
 }

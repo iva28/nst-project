@@ -1,10 +1,13 @@
 package com.ivastanisic.nst.service.implementation;
 
 import com.ivastanisic.nst.converter.impl.*;
+import com.ivastanisic.nst.domain.AcademicTitle;
+import com.ivastanisic.nst.domain.AcademicTitleHistory;
 import com.ivastanisic.nst.domain.Department;
 import com.ivastanisic.nst.domain.Member;
 import com.ivastanisic.nst.dto.*;
 import com.ivastanisic.nst.repository.AcademicTitleHistoryRepository;
+import com.ivastanisic.nst.repository.AcademicTitleRepository;
 import com.ivastanisic.nst.repository.DepartmentRepository;
 import com.ivastanisic.nst.repository.MemberRepository;
 import com.ivastanisic.nst.role.MemberRole;
@@ -45,6 +48,9 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private final AcademicTitleHistoryService academicTitleHistoryService;
 
+    @Autowired
+    private final AcademicTitleRepository academicTitleRepository;
+
     @Override
     public MemberDTO save(MemberDTO obj) throws Exception {
         return null;
@@ -74,8 +80,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDTO findById(Long aLong) throws Exception {
-        return null;
+    public MemberDTO findById(Long id) throws Exception {
+        if (id == null) {
+            throw new Exception("Member id can't be null");
+        }
+
+        return memberConverter.toDTO(memberRepository.findById(id).get());
     }
 
     @Override
@@ -177,6 +187,48 @@ public class MemberServiceImpl implements MemberService {
                 memberDTO.getAcademicTitleDTO(),
                 memberDTO.getScientificFieldDTO()));
         return memberConverter.toDTO(savedMember);
+    }
+
+    @Override
+    @Transactional
+    public MemberDTO updateMemberAcademicTitle(Long id, AcademicTitleDTO academicTitleDTO) throws Exception {
+        if (id == null) {
+            throw new Exception("Id of member for updating their academic title can't be null");
+        }
+
+        Optional<Member> member = memberRepository.findById(id);
+        if (member.isEmpty()) {
+            throw new Exception("Member doesn't exist");
+        }
+
+        Optional<AcademicTitle> academicTitleCheck = academicTitleRepository.findByName(academicTitleDTO.getName());
+        if (academicTitleCheck.isEmpty()) {
+            throw new Exception("Input valid academic title");
+        }
+
+        Member memberToUpdate = member.get();
+        final LocalDate endDate = LocalDate.now();
+
+        AcademicTitleHistory history = new AcademicTitleHistory(
+                null,
+                memberToUpdate.getStartDate(),
+                endDate,
+                memberToUpdate,
+                memberToUpdate.getAcademicTitle(),
+                memberToUpdate.getScientificField()
+        );
+
+        academicTitleHistoryRepository.save(history);
+
+        memberToUpdate.setAcademicTitle(academicTitleCheck.get());
+        memberToUpdate.setStartDate(endDate);
+
+        return memberConverter.toDTO(memberRepository.save(memberToUpdate));
+    }
+
+    @Override
+    public List<MemberDTO> getAllByAcedemicTitle(AcademicTitleDTO academicTitleDTO) throws Exception {
+        return null;
     }
 
 

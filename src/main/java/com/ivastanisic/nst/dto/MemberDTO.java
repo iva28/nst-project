@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -20,6 +21,7 @@ public class MemberDTO implements Serializable {
     private String firstName;
     @NotNull
     private String lastName;
+    private LocalDate startDate;
     private MemberRole role;
     private DepartmentDTO departmentDTO;
     private AcademicTitleDTO academicTitleDTO;
