@@ -60,4 +60,27 @@ public class DepartmentServiceTests {
         Assertions.assertNotNull(departmentFound);
         Assertions.assertEquals(departmentFound, departmentDTO);
     }
+
+    @Test
+    public void findByIdFailureTest() throws Exception{
+        Department department = new Department(1L, "Department 1", "D1");
+        Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> departmentService.findById(department.getId()));
+    }
+
+    @Test
+    public void deleteDepartmentSuccess() throws Exception{
+        Department department = new Department(1L, "Department 1", "D1");
+        Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.of(department));
+        departmentService.delete(department.getId());
+        Mockito.verify(departmentRepository, Mockito.times(1)).deleteById(department.getId());
+    }
+
+    @Test
+    public void deleteDepartmentFailure() throws Exception{
+        Department department = new Department(1L, "Department 1", "D1");
+        Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> departmentService.delete(department.getId()));
+    }
+
 }
