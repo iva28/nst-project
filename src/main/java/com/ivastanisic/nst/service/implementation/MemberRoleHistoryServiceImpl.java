@@ -6,11 +6,13 @@ import com.ivastanisic.nst.domain.MemberRoleHistory;
 import com.ivastanisic.nst.dto.MemberRoleHistoryDTO;
 import com.ivastanisic.nst.repository.DepartmentRepository;
 import com.ivastanisic.nst.repository.MemberRoleHistoryRepository;
+import com.ivastanisic.nst.role.MemberRole;
 import com.ivastanisic.nst.service.abstraction.MemberRoleHistoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,7 @@ public class MemberRoleHistoryServiceImpl implements MemberRoleHistoryService {
 
     @Override
     public List<MemberRoleHistoryDTO> getAll() {
+
         return null;
     }
 
@@ -73,5 +76,24 @@ public class MemberRoleHistoryServiceImpl implements MemberRoleHistoryService {
 
         List<MemberRoleHistory> memberRoleHistories = memberRoleHistoryRepository.findByDepartmentShortName(shortName);
         return memberRoleHistoryConverter.listToDTO(memberRoleHistories);
+    }
+
+    @Override
+    public List<MemberRoleHistoryDTO> getAllByRole(String role) throws Exception {
+        if (role == null) {
+            throw new Exception("Role can't be empty");
+        }
+
+        boolean roleExists = Arrays.stream(MemberRole.values()).anyMatch(
+                memberRole -> memberRole == MemberRole.valueOf(role.toUpperCase()));
+
+        if (!roleExists) {
+            throw new Exception("Role doesn't exist");
+        }
+
+        List<MemberRoleHistory> roleHistories = memberRoleHistoryRepository.findByRole(
+                MemberRole.valueOf(role.toUpperCase()));
+
+        return memberRoleHistoryConverter.listToDTO(roleHistories);
     }
 }

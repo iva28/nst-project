@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MemberRoleHistoryService extends DomainService<MemberRoleHistoryDTO, Long> {
     List<MemberRoleHistoryDTO> getAllByDepartment(String shortName) throws Exception;
+
+    List<MemberRoleHistoryDTO> getAllByRole(String role) throws Exception;
 }

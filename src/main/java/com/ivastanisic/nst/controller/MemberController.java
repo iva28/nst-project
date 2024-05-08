@@ -18,13 +18,17 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @GetMapping()
+    @GetMapping("/all")
+    public ResponseEntity<List<MemberDTO>> getAllMembers() throws Exception {
+        return ResponseEntity.ok(memberService.getAll());
+    }
+    @GetMapping("/role")
     public ResponseEntity<List<MemberDTO>> getAllMembersByRole(@RequestParam(name = "role") String role) throws Exception {
         List<MemberDTO> memberDTOS = memberService.getAllMembersByRole(role);
         return new ResponseEntity<>(memberDTOS, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/department/{id}")
     public ResponseEntity<List<MemberDTO>> getAllMembersInDepartment(@PathVariable Long id) throws Exception {
         List<MemberDTO> memberDTOS = memberService.getAllMembersInDepartment(id);
         return new ResponseEntity<>(memberDTOS, HttpStatus.OK);
@@ -59,7 +63,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.updateMemberRole(id, roleChangeDTO));
     }
 
-    @GetMapping("/member-id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<MemberDTO> getByMemberId(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(memberService.findById(id));
     }

@@ -55,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberDTO> getAll() {
-        return null;
+        return memberConverter.listToDTO(memberRepository.findAll());
     }
 
     @Override

@@ -20,10 +20,18 @@ public class MemberRoleHistoryController {
     @Autowired
     private final MemberRoleHistoryService memberRoleHistoryService;
 
-    @GetMapping()
+    @GetMapping("/department")
     public ResponseEntity<List<MemberRoleHistoryDTO>> getAllByDepartment(
             @RequestParam(name = "short-name") String shortName)
             throws Exception{
         return ResponseEntity.ok(memberRoleHistoryService.getAllByDepartment(shortName));
     }
+
+    @GetMapping("/role-name")
+    public ResponseEntity<List<MemberRoleHistoryDTO>> getAllByRole(
+            @RequestParam(name = "role") String role)
+            throws Exception{
+        return ResponseEntity.ok(memberRoleHistoryService.getAllByRole(role));
+    }
+
 }

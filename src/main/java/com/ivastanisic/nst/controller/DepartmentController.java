@@ -20,7 +20,7 @@ public class DepartmentController {
     @Autowired
     private final DepartmentService departmentService;
 
-    @GetMapping
+    @GetMapping("/all")
     private ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
         List<DepartmentDTO> departments = departmentService.getAll();
         return new ResponseEntity<>(departments, HttpStatus.OK);
