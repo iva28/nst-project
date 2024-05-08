@@ -12,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -49,7 +54,7 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void findByIdSuccessTest() throws Exception{
+    public void findByIdSuccessTest() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
 
@@ -62,14 +67,14 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void findByIdFailureTest() throws Exception{
+    public void findByIdFailureTest() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> departmentService.findById(department.getId()));
     }
 
     @Test
-    public void deleteDepartmentSuccess() throws Exception{
+    public void deleteDepartmentSuccess() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.of(department));
         departmentService.delete(department.getId());
@@ -77,10 +82,34 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void deleteDepartmentFailure() throws Exception{
+    public void deleteDepartmentFailure() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> departmentService.delete(department.getId()));
     }
+
+//    @Test
+//    public void getAllDepartments() {
+//        Department department1 = new Department(4l, "Department 4", "D4");
+//        Department department2 = new Department(5l, "Department 5", "D5");
+//
+//        List<Department> departments = Arrays.asList(department1, department2);
+//        System.out.println(departments);
+//
+//        Mockito.when(departmentRepository.findAll()).thenReturn(departments);
+//
+//        DepartmentDTO departmentDTO1 = new DepartmentDTO(4l, "Department 4", "D4");
+//        DepartmentDTO departmentDTO2 = new DepartmentDTO(5l, "Department 5", "D5");
+//
+//        Mockito.when(departmentConverter.toDTO(department1)).thenReturn(departmentDTO1);
+//        Mockito.when(departmentConverter.toDTO(department2)).thenReturn(departmentDTO2);
+//
+//        List<DepartmentDTO> allDepartments = departmentService.getAll();
+//        System.out.println(allDepartments);
+//
+//        for (int i = 0; i < departments.size(); i++) {
+//            Assertions.assertEquals(allDepartments.get(i), departmentConverter.toDTO(departments.get(i)));
+//        }
+//    }
 
 }
