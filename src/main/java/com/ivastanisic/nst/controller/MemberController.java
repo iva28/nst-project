@@ -1,9 +1,6 @@
 package com.ivastanisic.nst.controller;
 
-import com.ivastanisic.nst.dto.AcademicTitleDTO;
-import com.ivastanisic.nst.dto.AcademicTitleHistoryDTO;
-import com.ivastanisic.nst.dto.MemberDTO;
-import com.ivastanisic.nst.dto.MemberRoleChangeDTO;
+import com.ivastanisic.nst.dto.*;
 import com.ivastanisic.nst.service.abstraction.MemberService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -61,8 +58,9 @@ public class MemberController {
     public ResponseEntity<MemberDTO> updateMemberRole(@PathVariable Long id, @RequestBody MemberRoleChangeDTO roleChangeDTO) throws Exception {
         return ResponseEntity.ok(memberService.updateMemberRole(id, roleChangeDTO));
     }
+
     @GetMapping("/member-id/{id}")
-    public ResponseEntity<MemberDTO> getByMemberId(@PathVariable Long id) throws  Exception{
+    public ResponseEntity<MemberDTO> getByMemberId(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(memberService.findById(id));
     }
 
@@ -71,5 +69,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getAllByAcedemicTitle(name));
     }
 
+    @PatchMapping("/update-department")
+    public ResponseEntity<MemberDTO> updateMemberDepartment(
+            @Valid @RequestBody MemberDepartmentChangeDTO memberDepartment) throws Exception {
 
+        return ResponseEntity.ok(memberService.updateMemberDepartment(memberDepartment));
+    }
 }

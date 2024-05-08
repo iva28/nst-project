@@ -296,5 +296,33 @@ public class MemberServiceImpl implements MemberService {
         return memberConverter.toDTO(memberRepository.save(member));
     }
 
+    @Override
+    public MemberDTO updateMemberDepartment(MemberDepartmentChangeDTO memberDepartment) throws Exception {
+        if (memberDepartment == null) {
+            throw new Exception("Member and department both can't be null");
+        }
+
+        Optional<Member> memberExists = memberRepository.findById(memberDepartment.getMemberId());
+        if (memberExists.isEmpty()) {
+            throw new Exception("Member doesn't exist");
+        }
+
+        final Member member = memberExists.get();
+        if (member.getRole() == MemberRole.DIRECTOR || member.getRole() == MemberRole.SECRETARY) {
+            throw new Exception("You can't delete director or secretary. Change their roles first");
+        }
+
+        Optional<Department> departmentExists = departmentRepository.findByShortName(memberDepartment.getShortName());
+        if (departmentExists.isEmpty()) {
+            throw new Exception("Department doesn't exist");
+        }
+
+        final Department department = departmentExists.get();
+        member.setDepartment(department);
+        member.setStartDate(LocalDate.now());
+
+        return memberConverter.toDTO(memberRepository.save(member));
+    }
+
 
 }

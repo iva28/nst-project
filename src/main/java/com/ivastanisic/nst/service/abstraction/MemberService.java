@@ -1,9 +1,6 @@
 package com.ivastanisic.nst.service.abstraction;
 
-import com.ivastanisic.nst.dto.AcademicTitleDTO;
-import com.ivastanisic.nst.dto.AcademicTitleHistoryDTO;
-import com.ivastanisic.nst.dto.MemberDTO;
-import com.ivastanisic.nst.dto.MemberRoleChangeDTO;
+import com.ivastanisic.nst.dto.*;
 import com.ivastanisic.nst.service.DomainService;
 
 import java.util.List;
@@ -22,4 +19,6 @@ public interface MemberService extends DomainService<MemberDTO, Long> {
     List<MemberDTO> getAllByAcedemicTitle(String name) throws Exception;
 
     MemberDTO updateMemberRole(Long id, MemberRoleChangeDTO roleChangeDTO) throws Exception;
+
+    MemberDTO updateMemberDepartment(MemberDepartmentChangeDTO memberDepartment) throws Exception;
 }
