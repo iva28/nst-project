@@ -3,13 +3,14 @@ package com.ivastanisic.nst.repository;
 import com.ivastanisic.nst.domain.Department;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
 @SpringBootTest
-public class DepartmanRepositoryTests {
+public class DepartmentRepositoryTests {
     @Autowired
     private DepartmentRepository departmentRepository;
 
@@ -49,6 +50,19 @@ public class DepartmanRepositoryTests {
         Assertions.assertNotNull(departmentFound.get());
         Assertions.assertEquals(departmentSaved, departmentFound.get());
         Assertions.assertEquals(departmentSaved.getShortName(), departmentFound.get().getShortName());
+    }
+    @Test
+    public void findByIdSuccessTest() {
+        Department department = new Department(1L, "Department 1", "D1");
+
+        Department departmentSaved = departmentRepository.save(department);
+        Assertions.assertNotNull(departmentSaved);
+
+        Optional<Department> departmentFound = departmentRepository.findById(department.getId());
+
+        Assertions.assertNotNull(departmentFound.get());
+        Assertions.assertEquals(departmentFound.get(), department);
+        Assertions.assertEquals(department.getId(), departmentFound.get().getId());
     }
 
 
