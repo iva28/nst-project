@@ -11,7 +11,7 @@ import lombok.NonNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tbl_member_history")
+@Table(name = "tbl_member_role_history")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

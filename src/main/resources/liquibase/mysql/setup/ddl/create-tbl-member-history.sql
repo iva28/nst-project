@@ -1,4 +1,4 @@
-CREATE TABLE tbl_member_history(
+CREATE TABLE tbl_member_role_history(
     id BIGINT NOT NULL AUTO_INCREMENT,
     role VARCHAR(30),
     start_date DATE NOT NULL,
