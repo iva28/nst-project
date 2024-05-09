@@ -75,4 +75,14 @@ public class DepartmentControllerTests {
 
         Mockito.verify(departmentService, Mockito.times(1)).save(department);
     }
+    @Test
+    public void testSaveDepartmentFailure() throws Exception {
+        DepartmentDTO department = new DepartmentDTO(null, "Department 1", "D1");
+        Mockito.when(departmentService.save(department)).thenThrow(Exception.class);
+
+        mockMvc.perform(post("/department/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(department))).
+                andExpect(status().isBadRequest());
+    }
 }
