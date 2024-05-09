@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -52,9 +53,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<Department> departmentExists = departmentRepository.findById(id);
         if (!departmentExists.isPresent()) {
             throw new Exception("Department with id " + id + " doesn't exist");
-        } else {
-            return departmentConverter.toDTO(departmentExists.get());
         }
+        return departmentConverter.toDTO(departmentExists.get());
     }
 
     @Override
