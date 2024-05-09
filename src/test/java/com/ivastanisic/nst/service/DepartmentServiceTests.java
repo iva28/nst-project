@@ -159,16 +159,13 @@ public class DepartmentServiceTests {
         Assertions.assertEquals(departmentDTOUpdate.getName(), updatedDepartment.getName());
         Assertions.assertEquals(departmentDTOUpdate.getShortName(), updatedDepartment.getShortName());
     }
-//    @Test
-//    public void updateDepartmentByIdFailure() throws Exception{
-//        Department department = new Department(4l, "Department 4", "D4");
-//
-//        Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.empty());
-//
-//        DepartmentDTO departmentDTO = new DepartmentDTO(4l, "Department 5", "D5");
-//        Mockito.when(departmentConverter.toDTO(department)).thenReturn(departmentDTO);
-//        Assertions.assertThrows(Exception.class, () -> departmentServicepa.updateById(departmentDTO.getId()));
-//    }
+    @Test
+    public void updateDepartmentByIdFailure() throws Exception{
+        Long id = 1L;
+        DepartmentDTO departmentDTO = new DepartmentDTO(null, "Department 1", "D1");
+        Mockito.when(departmentRepository.findById(id)).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> departmentService.updateById(id, departmentDTO));
+    }
 
 
 }
