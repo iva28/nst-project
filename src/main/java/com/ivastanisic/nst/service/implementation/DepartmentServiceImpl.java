@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -36,7 +37,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentDTO> getAll() {
-        return departmentConverter.listToDTO(departmentRepository.findAll());
+//        return departmentConverter.listToDTO(departmentRepository.findAll());
+        return departmentRepository.findAll()
+                .stream().map(entity -> departmentConverter.toDTO(entity))
+                .collect(Collectors.toList());
     }
 
     @Override
