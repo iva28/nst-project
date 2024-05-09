@@ -106,7 +106,7 @@ public class DepartmentControllerTests {
     }
 
     @Test
-    public void testFindDepartmenByIdFailure() throws Exception{
+    public void testFindDepartmenByIdFailure() throws Exception {
         DepartmentDTO department = new DepartmentDTO(1L, "Department 1", "D1");
 
         Mockito.when(departmentService.findById(department.getId())).thenThrow(Exception.class);
@@ -115,6 +115,7 @@ public class DepartmentControllerTests {
 
         Mockito.verify(departmentService, Mockito.times(1)).findById(department.getId());
     }
+
     @Test
     public void testFindDepartmentByIdSuccess() throws Exception {
         DepartmentDTO department = new DepartmentDTO(1L, "Department 1", "D1");
@@ -126,10 +127,42 @@ public class DepartmentControllerTests {
 
         DepartmentDTO returnedDepartment = objectMapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<DepartmentDTO>() {
-        });
+                });
 
         Assertions.assertNotNull(returnedDepartment);
         Assertions.assertEquals(department.getName(), returnedDepartment.getName());
         Assertions.assertEquals(department.getShortName(), returnedDepartment.getShortName());
     }
+
+    @Test
+    public void testUpdateDepartmentFailure() throws Exception {
+        Long id = 1l;
+        DepartmentDTO department = new DepartmentDTO(null, "Department 1", "D1");
+
+        Mockito.when(departmentService.updateById(id, department)).thenThrow(Exception.class);
+
+        mockMvc.perform(put("/department/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(department)))
+                .andExpect(status().isBadRequest());
+
+        Mockito.verify(departmentService, Mockito.times(1)).updateById(id, department);
+    }
+
+    @Test
+    public void testUpdateDepartmentSuccess() throws Exception {
+        Long id = 1l;
+        DepartmentDTO department = new DepartmentDTO(null, "Department 1", "D1");
+
+        Mockito.when(departmentService.updateById(id, department)).thenReturn(department);
+
+        mockMvc.perform(put("/department/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(department)))
+                .andExpect(status().is(HttpStatus.ACCEPTED.value()));
+
+        Mockito.verify(departmentService, Mockito.times(1)).updateById(id, department);
+    }
+
+
 }
