@@ -5,7 +5,6 @@ import com.ivastanisic.nst.domain.Department;
 import com.ivastanisic.nst.dto.DepartmentDTO;
 import com.ivastanisic.nst.service.abstraction.DepartmentService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,11 +20,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(DepartmentController.class)
 public class DepartmentControllerTests {
@@ -57,5 +58,21 @@ public class DepartmentControllerTests {
         Assertions.assertTrue(returnedDepartments.contains(departments.get(0)));
         Assertions.assertTrue(returnedDepartments.contains(departments.get(1)));
         Mockito.verify(departmentService, Mockito.times(1)).getAll();
+    }
+
+    @Test
+    public void testSaveDepartmentSuccess() throws Exception {
+        DepartmentDTO department = new DepartmentDTO(null, "Department 1", "D1");
+        Mockito.when(departmentService.save(department)).thenReturn(department);
+
+        mockMvc.perform(post("/department/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(department)))
+                .andExpect(status().is(201))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", equalTo(department.getName())))
+                .andExpect(jsonPath("$.shortName", equalTo(department.getShortName())));
+
+        Mockito.verify(departmentService, Mockito.times(1)).save(department);
     }
 }
