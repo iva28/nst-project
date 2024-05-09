@@ -9,6 +9,7 @@ import com.ivastanisic.nst.service.abstraction.DepartmentService;
 import jakarta.persistence.Entity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -96,17 +97,15 @@ public class DepartmentServiceTests {
         Department department1 = new Department(4l, "Department 4", "D4");
         Department department2 = new Department(5l, "Department 5", "D5");
 
-        List<Department> departments = new ArrayList<>();
-        departments.add(department1);
-        departments.add(department2);
+        List<Department> departments = List.of(department1, department2);
 
-        System.out.println(departments);
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(4l,  "Department 4", "D4");
+        DepartmentDTO departmentDTO2 = new DepartmentDTO(5l,  "Department 5", "D5");
+
+        List<DepartmentDTO> departmentsDepartmentDTOS = List.of(departmentDTO1, departmentDTO2);
 
         Mockito.when(departmentRepository.findAll()).thenReturn(departments);
-
-        DepartmentDTO departmentDTO1 = new DepartmentDTO(4l, "Department 4", "D4");
-        DepartmentDTO departmentDTO2 = new DepartmentDTO(5l, "Department 5", "D5");
-
+        Mockito.when(departmentConverter.listToDTO(departments)).thenReturn(departmentsDepartmentDTOS);
         Mockito.when(departmentConverter.toDTO(department1)).thenReturn(departmentDTO1);
         Mockito.when(departmentConverter.toDTO(department2)).thenReturn(departmentDTO2);
 

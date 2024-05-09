@@ -37,10 +37,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentDTO> getAll() {
-//        return departmentConverter.listToDTO(departmentRepository.findAll());
-        return departmentRepository.findAll()
-                .stream().map(entity -> departmentConverter.toDTO(entity))
-                .collect(Collectors.toList());
+        return departmentConverter.listToDTO(departmentRepository.findAll());
     }
 
     @Override
