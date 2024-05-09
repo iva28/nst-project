@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.http.MediaType;
@@ -90,6 +91,15 @@ public class DepartmentControllerTests {
         Long id = 1L;
         Mockito.doThrow(Exception.class).when(departmentService).delete(id);
         mockMvc.perform(delete("/department/{id}", id)).andExpect(status().isBadRequest());
+        Mockito.verify(departmentService, Mockito.times(1)).delete(id);
+    }
+    @Test
+    public void testDeleteDepartmentSuccess() throws Exception {
+        Long id = 1L;
+        Mockito.doNothing().when(departmentService).delete(id);
+        mockMvc.perform(delete("/department/{id}",id))
+                .andExpect(status().is(HttpStatus.NO_CONTENT.value()));
+
         Mockito.verify(departmentService, Mockito.times(1)).delete(id);
     }
 }
