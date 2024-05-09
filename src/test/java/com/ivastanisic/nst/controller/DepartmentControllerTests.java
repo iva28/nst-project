@@ -85,4 +85,11 @@ public class DepartmentControllerTests {
                 .content(objectMapper.writeValueAsString(department))).
                 andExpect(status().isBadRequest());
     }
+    @Test
+    public void testDeleteDepartmentFailure() throws Exception {
+        Long id = 1L;
+        Mockito.doThrow(Exception.class).when(departmentService).delete(id);
+        mockMvc.perform(delete("/department/{id}", id)).andExpect(status().isBadRequest());
+        Mockito.verify(departmentService, Mockito.times(1)).delete(id);
+    }
 }
