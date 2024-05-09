@@ -67,8 +67,8 @@ public class DepartmentControllerTests {
         Mockito.when(departmentService.save(department)).thenReturn(department);
 
         mockMvc.perform(post("/department/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(department)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(department)))
                 .andExpect(status().is(201))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", equalTo(department.getName())))
@@ -76,16 +76,18 @@ public class DepartmentControllerTests {
 
         Mockito.verify(departmentService, Mockito.times(1)).save(department);
     }
+
     @Test
     public void testSaveDepartmentFailure() throws Exception {
         DepartmentDTO department = new DepartmentDTO(null, "Department 1", "D1");
         Mockito.when(departmentService.save(department)).thenThrow(Exception.class);
 
         mockMvc.perform(post("/department/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(department))).
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(department))).
                 andExpect(status().isBadRequest());
     }
+
     @Test
     public void testDeleteDepartmentFailure() throws Exception {
         Long id = 1L;
@@ -93,13 +95,41 @@ public class DepartmentControllerTests {
         mockMvc.perform(delete("/department/{id}", id)).andExpect(status().isBadRequest());
         Mockito.verify(departmentService, Mockito.times(1)).delete(id);
     }
+
     @Test
     public void testDeleteDepartmentSuccess() throws Exception {
         Long id = 1L;
         Mockito.doNothing().when(departmentService).delete(id);
-        mockMvc.perform(delete("/department/{id}",id))
+        mockMvc.perform(delete("/department/{id}", id))
                 .andExpect(status().is(HttpStatus.NO_CONTENT.value()));
-
         Mockito.verify(departmentService, Mockito.times(1)).delete(id);
+    }
+
+    @Test
+    public void testFindDepartmenByIdFailure() throws Exception{
+        DepartmentDTO department = new DepartmentDTO(1L, "Department 1", "D1");
+
+        Mockito.when(departmentService.findById(department.getId())).thenThrow(Exception.class);
+        mockMvc.perform(get("/department/{id}", department.getId()))
+                .andExpect(status().isBadRequest());
+
+        Mockito.verify(departmentService, Mockito.times(1)).findById(department.getId());
+    }
+    @Test
+    public void testFindDepartmentByIdSuccess() throws Exception {
+        DepartmentDTO department = new DepartmentDTO(1L, "Department 1", "D1");
+
+        Mockito.when(departmentService.findById(department.getId())).thenReturn(department);
+
+        MvcResult result = mockMvc.perform(get("/department/{id}", department.getId()))
+                .andExpect(status().isOk()).andReturn();
+
+        DepartmentDTO returnedDepartment = objectMapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<DepartmentDTO>() {
+        });
+
+        Assertions.assertNotNull(returnedDepartment);
+        Assertions.assertEquals(department.getName(), returnedDepartment.getName());
+        Assertions.assertEquals(department.getShortName(), returnedDepartment.getShortName());
     }
 }
