@@ -79,4 +79,12 @@ public class MemberController {
 
         return ResponseEntity.ok(memberService.updateMemberDepartment(memberDepartment));
     }
+    @GetMapping("/director/department")
+    public ResponseEntity<MemberDTO> getDirectorForDepartment(@RequestParam(name = "name") String name) throws Exception{
+        return ResponseEntity.ok(memberService.findDirectorForDepartment(name));
+    }
+    @GetMapping("/secretary/department")
+    public ResponseEntity<MemberDTO> getSecretaryForDepartment(@RequestParam(name = "name") String name) throws Exception{
+        return ResponseEntity.ok(memberService.findSecretaryForDepartment(name));
+    }
 }
