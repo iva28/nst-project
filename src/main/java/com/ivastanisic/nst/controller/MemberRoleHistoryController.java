@@ -23,17 +23,20 @@ public class MemberRoleHistoryController {
     @GetMapping("/department")
     public ResponseEntity<List<MemberRoleHistoryDTO>> getAllByDepartment(
             @RequestParam(name = "short-name") String shortName)
-            throws Exception{
+            throws Exception {
         return ResponseEntity.ok(memberRoleHistoryService.getAllByDepartment(shortName));
     }
 
     @GetMapping("/role-name")
     public ResponseEntity<List<MemberRoleHistoryDTO>> getAllByRole(
             @RequestParam(name = "role") String role)
-            throws Exception{
+            throws Exception {
         return ResponseEntity.ok(memberRoleHistoryService.getAllByRole(role));
     }
 
-
+    @GetMapping("/all")
+    public ResponseEntity<List<MemberRoleHistoryDTO>> getAll() throws Exception{
+        return ResponseEntity.ok(memberRoleHistoryService.getAll());
+    }
 
 }

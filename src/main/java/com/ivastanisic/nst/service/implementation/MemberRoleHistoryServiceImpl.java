@@ -34,8 +34,7 @@ public class MemberRoleHistoryServiceImpl implements MemberRoleHistoryService {
 
     @Override
     public List<MemberRoleHistoryDTO> getAll() {
-
-        return null;
+        return memberRoleHistoryConverter.listToDTO(memberRoleHistoryRepository.findAll());
     }
 
     @Override
