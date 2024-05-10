@@ -88,4 +88,30 @@ public class ScientificFieldServiceTests {
         Mockito.when(scientificFieldRepository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> scientificFieldService.delete(id));
     }
+
+    @Test
+    public void testFindScientificFieldByNameSuccess() throws Exception {
+        ScientificField field = new ScientificField(1l, "Scientific field 1");
+        ScientificFieldDTO fieldDTO = new ScientificFieldDTO(1l, "Scientific field 1");
+
+        Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.of(field));
+        Mockito.when(scientificFieldConverter.toDTO(field)).thenReturn(fieldDTO);
+        Mockito.when(scientificFieldConverter.toEntity(fieldDTO)).thenReturn(field);
+
+        ScientificFieldDTO fieldFound = scientificFieldService.findByName(field.getName());
+        Assertions.assertNotNull(fieldFound);
+        Assertions.assertEquals(field.getName(), fieldFound.getName());
+    }
+
+    @Test
+    public void testFindScientificFieldByNameFailure() throws Exception {
+        ScientificField field = new ScientificField(1l, "Scientific field 1");
+        ScientificFieldDTO fieldDTO = new ScientificFieldDTO(1l, "Scientific field 1");
+
+        Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.empty());
+        Mockito.when(scientificFieldConverter.toDTO(field)).thenReturn(fieldDTO);
+        Mockito.when(scientificFieldConverter.toEntity(fieldDTO)).thenReturn(field);
+
+        Assertions.assertThrows(Exception.class, () -> scientificFieldService.findByName(field.getName()));
+    }
 }
