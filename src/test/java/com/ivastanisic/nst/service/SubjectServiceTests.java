@@ -76,4 +76,23 @@ public class SubjectServiceTests {
         Assertions.assertThrows(Exception.class, () -> subjectService.delete(id));
     }
 
+    @Test
+    public void testFindSubjectByIdSuccess() throws Exception {
+        Long id = 1l;
+        Department department1 = new Department(1l, "Dep 1", "D1");
+        Subject subject1 = new Subject(1l, "Subj 1", 5, department1);
+
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+
+        Mockito.when(subjectRepository.findById(id)).thenReturn(Optional.of(subject1));
+        Mockito.when(subjectConverter.toDTO(subject1)).thenReturn(subjectDTO1);
+
+        SubjectDTO subjectById = subjectService.findById(id);
+        Assertions.assertNotNull(subjectById);
+        Assertions.assertEquals(subjectDTO1, subjectById);
+    }
+
+
+
 }
