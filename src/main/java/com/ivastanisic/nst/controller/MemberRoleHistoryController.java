@@ -34,4 +34,6 @@ public class MemberRoleHistoryController {
         return ResponseEntity.ok(memberRoleHistoryService.getAllByRole(role));
     }
 
+
+
 }
