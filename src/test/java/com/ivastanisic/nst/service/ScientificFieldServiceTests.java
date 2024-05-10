@@ -69,4 +69,23 @@ public class ScientificFieldServiceTests {
         Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.of(field));
         Assertions.assertThrows(Exception.class, () -> scientificFieldService.save(fieldDTO));
     }
+
+    @Test
+    public void testDeleteScientificFieldSuccess() throws Exception {
+        Long id = 1l;
+        ScientificField field = new ScientificField(id, "Scientific field 1");
+
+        Mockito.when(scientificFieldRepository.findById(id)).thenReturn(Optional.of(field));
+        scientificFieldService.delete(id);
+        Mockito.verify(scientificFieldRepository, Mockito.times(1)).deleteById(id);
+    }
+
+    @Test
+    public void testDeleteScientificFieldFailure() throws Exception {
+        Long id = 1l;
+        ScientificField field = new ScientificField(id, "Scientific field 1");
+
+        Mockito.when(scientificFieldRepository.findById(id)).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> scientificFieldService.delete(id));
+    }
 }
