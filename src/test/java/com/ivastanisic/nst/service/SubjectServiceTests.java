@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 public class SubjectServiceTests {
@@ -51,6 +52,28 @@ public class SubjectServiceTests {
         List<SubjectDTO> all = subjectService.getAll();
         Assertions.assertNotNull(all);
         Assertions.assertEquals(all, subjectsDtos);
+    }
+
+    @Test
+    public void testDeleteSubjectSuccess() throws Exception {
+        Long id = 1l;
+        Department department1 = new Department(1l, "Dep 1", "D1");
+        Subject subject1 = new Subject(1l, "Subj 1", 5, department1);
+
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+
+        Mockito.when(subjectRepository.findById(id)).thenReturn(Optional.of(subject1));
+        Mockito.when(subjectConverter.toDTO(subject1)).thenReturn(subjectDTO1);
+        subjectService.delete(id);
+        Mockito.verify(subjectRepository, Mockito.times(1)).deleteById(id);
+    }
+
+    @Test
+    public void testDeleteSubjectFailure() {
+        Long id = 1L;
+        Mockito.when(subjectRepository.findById(id)).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> subjectService.delete(id));
     }
 
 }
