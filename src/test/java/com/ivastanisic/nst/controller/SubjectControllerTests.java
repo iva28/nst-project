@@ -89,4 +89,60 @@ public class SubjectControllerTests {
                         .content(objectMapper.writeValueAsString(subjectDTO1)))
                 .andExpect(status().is(405));
     }
+
+    @Test
+    public void testFindSubjectByIdSuccess() throws Exception {
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+
+        Mockito.when(subjectService.findById(subjectDTO1.getId())).thenReturn(subjectDTO1);
+
+        MvcResult result = mockMvc.perform(get("/subject/find/{id}", departmentDTO1.getId()))
+                .andExpect(status().isOk()).andReturn();
+
+        SubjectDTO resultSubject = objectMapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<SubjectDTO>() {
+                });
+
+        Assertions.assertNotNull(resultSubject);
+        Assertions.assertEquals(subjectDTO1.getName(), resultSubject.getName());
+        Assertions.assertEquals(subjectDTO1.getEspb(), resultSubject.getEspb());
+        Assertions.assertEquals(subjectDTO1.getDepartmentDTO().getName(), resultSubject.getDepartmentDTO().getName());
+        Assertions.assertEquals(subjectDTO1.getDepartmentDTO().getShortName(), resultSubject.getDepartmentDTO().getShortName());
+    }
+
+    @Test
+    public void testFindSubjectByIdFailure() throws Exception{
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+
+        Mockito.when(subjectService.findById(subjectDTO1.getId())).thenThrow(Exception.class);
+
+        mockMvc.perform(get("/subject/find/{id}", departmentDTO1.getId()))
+                .andExpect(status().isBadRequest());
+
+        Mockito.verify(subjectService, Mockito.times(1)).findById(subjectDTO1.getId());
+    }
+
+    @Test
+    public void testDeleteSubjectSuccess() throws Exception {
+        Long id = 1l;
+        Mockito.doNothing().when(subjectService).delete(id);
+
+        mockMvc.perform(delete("/subject/delete/{id}",id))
+                .andExpect(status().isOk());
+
+        Mockito.verify(subjectService, Mockito.times(1)).delete(id);
+    }
+
+    @Test
+    public void testDeleteSubjectFailure() throws Exception {
+        Long id = 1l;
+        Mockito.doThrow(Exception.class).when(subjectService).delete(id);
+
+        mockMvc.perform(delete("/subject/delete/{id}",id))
+                .andExpect(status().isBadRequest());
+
+        Mockito.verify(subjectService, Mockito.times(1)).delete(id);
+    }
 }
