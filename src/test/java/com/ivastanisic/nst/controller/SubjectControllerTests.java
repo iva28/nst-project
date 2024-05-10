@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 import java.util.List;
+import java.util.Optional;
 
 @WebMvcTest(SubjectController.class)
 public class SubjectControllerTests {
@@ -55,4 +57,36 @@ public class SubjectControllerTests {
         Mockito.verify(subjectService, Mockito.times(1)).getAll();
     }
 
+    @Test
+    public void testSaveSubjectSuccess() throws Exception {
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(null, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(null, "Subj 1", 5, departmentDTO1);
+
+        Mockito.when(subjectService.save(subjectDTO1)).thenReturn(subjectDTO1);
+
+        mockMvc.perform(post("/subject/save")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(subjectDTO1)))
+                .andExpect(status().is(HttpStatus.CREATED.value()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", equalTo(subjectDTO1.getName())))
+                .andExpect(jsonPath("$.espb", equalTo(subjectDTO1.getEspb())))
+                .andExpect(jsonPath("$.departmentDTO.name", equalTo(subjectDTO1.getDepartmentDTO().getName())))
+                .andExpect(jsonPath("$.departmentDTO.shortName", equalTo(subjectDTO1.getDepartmentDTO().getShortName())));
+
+        Mockito.verify(subjectService, Mockito.times(1)).save(subjectDTO1);
+    }
+
+    @Test
+    public void testSaveSubjectFailure() throws Exception {
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(null, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(null, "Subj 1", 5, departmentDTO1);
+
+        Mockito.when(subjectService.save(subjectDTO1)).thenThrow(Exception.class);
+
+        mockMvc.perform(get("/subject/save")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(subjectDTO1)))
+                .andExpect(status().is(405));
+    }
 }
