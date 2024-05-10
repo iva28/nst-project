@@ -22,11 +22,11 @@ public class SubjectConverterTests {
 
     @Test
     public void toEntityTest() {
-        Department department = new Department(1l,"Dep 1", "D1");
+        Department department = new Department(1l, "Dep 1", "D1");
         Subject subject = new Subject(1l, "Subj 1", 5, department);
 
         DepartmentDTO departmentDTO = new DepartmentDTO(1l, "Dep 1", "D1");
-        SubjectDTO subjectDTO = new SubjectDTO(1l,"Subj 1", 5,departmentDTO);
+        SubjectDTO subjectDTO = new SubjectDTO(1l, "Subj 1", 5, departmentDTO);
 
         Mockito.when(departmentConverter.toDTO(department)).thenReturn(departmentDTO);
         Mockito.when(departmentConverter.toEntity(departmentDTO)).thenReturn(department);
@@ -34,6 +34,22 @@ public class SubjectConverterTests {
         Subject entity = subjectConverter.toEntity(subjectDTO);
         Assertions.assertNotNull(entity);
         Assertions.assertEquals(subject, entity);
+    }
+
+    @Test
+    public void toDtoTest() {
+        Department department = new Department(1l, "Dep 1", "D1");
+        Subject subject = new Subject(1l, "Subj 1", 5, department);
+
+        DepartmentDTO departmentDTO = new DepartmentDTO(1l, "Dep 1", "D1");
+        SubjectDTO subjectDTO = new SubjectDTO(1l, "Subj 1", 5, departmentDTO);
+
+        Mockito.when(departmentConverter.toDTO(department)).thenReturn(departmentDTO);
+        Mockito.when(departmentConverter.toEntity(departmentDTO)).thenReturn(department);
+
+        SubjectDTO dto = subjectConverter.toDTO(subject);
+        Assertions.assertNotNull(dto);
+        Assertions.assertEquals(subjectDTO, dto);
     }
 
 }
