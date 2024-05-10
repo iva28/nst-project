@@ -1,5 +1,6 @@
 package com.ivastanisic.nst.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ivastanisic.nst.domain.Department;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,13 +13,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubjectDTO implements Serializable {
-
+    @JsonIgnore
     private Long id;
     @NotNull
     private String name;
     @NotNull
     private int espb;
-//    @NotNull
+    //    @NotNull
     private DepartmentDTO departmentDTO;
 
 }

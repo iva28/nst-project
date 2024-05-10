@@ -19,25 +19,25 @@ public class SubjectController {
     @Autowired
     private final SubjectService subjectService;
 
-    @GetMapping
+    @GetMapping("/all")
     private ResponseEntity<List<SubjectDTO>> getAllSubjects() {
         List<SubjectDTO> subjects = subjectService.getAll();
         return new ResponseEntity<>(subjects, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     private ResponseEntity<SubjectDTO> saveSubject(@Valid @RequestBody SubjectDTO subjectDTO) throws Exception {
         SubjectDTO savedSubjectDTO = subjectService.save(subjectDTO);
         return new ResponseEntity<>(savedSubjectDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/fin{id}")
     private ResponseEntity<SubjectDTO> findSubjectById(@PathVariable Long id) throws Exception {
         SubjectDTO subjectDTO = subjectService.findById(id);
         return new ResponseEntity<>(subjectDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     private ResponseEntity<String> deleteSubject(@PathVariable Long id) throws Exception {
         subjectService.delete(id);
         return new ResponseEntity<>("Subject deleted", HttpStatus.OK);
