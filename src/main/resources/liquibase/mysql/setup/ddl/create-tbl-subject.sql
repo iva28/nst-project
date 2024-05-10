@@ -5,5 +5,5 @@ CREATE TABLE tbl_subject(
     department_id BIGINT,
 	PRIMARY KEY (id),
     CONSTRAINT department_fk FOREIGN KEY (department_id) REFERENCES tbl_department(id)
-    ON UPDATE CASCADE ON DELETE RESTRICT
+    ON UPDATE CASCADE ON DELETE CASCADE
 );

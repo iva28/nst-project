@@ -10,7 +10,7 @@ CREATE TABLE tbl_member(
      scientific_field_id BIGINT,
      PRIMARY KEY(id),
      CONSTRAINT department_fk1 FOREIGN KEY (department_id) REFERENCES tbl_department(id)
-     ON UPDATE CASCADE ON DELETE RESTRICT,
+     ON UPDATE CASCADE ON DELETE CASCADE,
      CONSTRAINT academic_title_fk2 FOREIGN KEY (academic_title_id) REFERENCES tbl_academic_title(id)
      ON UPDATE CASCADE ON DELETE RESTRICT,
      CONSTRAINT education_title_fk3 FOREIGN KEY (education_title_id) REFERENCES tbl_education_title(id)
