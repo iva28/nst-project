@@ -324,5 +324,23 @@ public class MemberServiceImpl implements MemberService {
         return memberConverter.toDTO(memberRepository.save(member));
     }
 
+    @Override
+    public MemberDTO findDirectorForDepartment(String name) throws Exception {
+        if (name == null) {
+            throw new Exception("Department name can't be null");
+        }
+
+        Optional<Department> department = departmentRepository.findByShortName(name);
+        if (department.isEmpty()) {
+            throw new Exception("Department doesn't exist");
+        }
+        Optional<Member> director = memberRepository.findByRoleAndDepartmentShortName(MemberRole.DIRECTOR, name);
+        if (director.isEmpty()) {
+            throw new Exception("There is no director for " + name + " department");
+        }
+
+        return memberConverter.toDTO(director.get());
+    }
+
 
 }

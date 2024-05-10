@@ -31,7 +31,7 @@ public class SubjectController {
         return new ResponseEntity<>(savedSubjectDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/fin{id}")
+    @GetMapping("/find/{id}")
     private ResponseEntity<SubjectDTO> findSubjectById(@PathVariable Long id) throws Exception {
         SubjectDTO subjectDTO = subjectService.findById(id);
         return new ResponseEntity<>(subjectDTO, HttpStatus.OK);
