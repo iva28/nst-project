@@ -50,7 +50,6 @@ public class DepartmentServiceTests {
     @Test
     public void saveDepartmentFailureTest() {
         Department department = new Department(1L, "Department 1", "D1");
-
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
 
         Mockito.when(departmentRepository.findByName(department.getName())).thenReturn(Optional.of(department));

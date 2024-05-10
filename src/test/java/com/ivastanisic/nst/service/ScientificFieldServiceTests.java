@@ -7,12 +7,14 @@ import com.ivastanisic.nst.repository.ScientificFieldRepository;
 import com.ivastanisic.nst.service.abstraction.ScientificFieldService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 public class ScientificFieldServiceTests {
@@ -42,5 +44,29 @@ public class ScientificFieldServiceTests {
         Assertions.assertNotNull(scientificFields);
         Assertions.assertEquals(scientificFields.get(0), fieldDTO1);
         Assertions.assertEquals(scientificFields.get(1), fieldDTO2);
+    }
+
+    @Test
+    public void testSaveScientificFieldSuccess() throws Exception {
+        ScientificField field = new ScientificField(1l, "Scientific field 1");
+        ScientificFieldDTO fieldDTO = new ScientificFieldDTO(1l, "Scientific field 1");
+
+        Mockito.when(scientificFieldConverter.toEntity(fieldDTO)).thenReturn(field);
+        Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.empty());
+        Mockito.when(scientificFieldRepository.save(field)).thenReturn(field);
+        Mockito.when(scientificFieldConverter.toDTO(field)).thenReturn(fieldDTO);
+
+        ScientificFieldDTO savedField = scientificFieldService.save(fieldDTO);
+        Assertions.assertNotNull(savedField);
+        Assertions.assertEquals(fieldDTO, savedField);
+    }
+
+    @Test
+    public void testSaveScientificFieldFailure() throws Exception {
+        ScientificField field = new ScientificField(1l, "Scientific field 1");
+        ScientificFieldDTO fieldDTO = new ScientificFieldDTO(1l, "Scientific field 1");
+
+        Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.of(field));
+        Assertions.assertThrows(Exception.class, () -> scientificFieldService.save(fieldDTO));
     }
 }
