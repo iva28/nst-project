@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class DepartmentConverterTests {
     @Autowired
     private DepartmentConverter departmentConverter;
+
     @Test
     public void toEntityTest() {
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
