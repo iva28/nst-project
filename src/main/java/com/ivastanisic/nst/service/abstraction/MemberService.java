@@ -23,4 +23,6 @@ public interface MemberService extends DomainService<MemberDTO, Long> {
     MemberDTO updateMemberDepartment(MemberDepartmentChangeDTO memberDepartment) throws Exception;
 
     MemberDTO findDirectorForDepartment(String name) throws Exception;
+
+    MemberDTO findSecretaryForDepartment(String name) throws Exception;
 }

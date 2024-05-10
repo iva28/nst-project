@@ -342,5 +342,20 @@ public class MemberServiceImpl implements MemberService {
         return memberConverter.toDTO(director.get());
     }
 
+    @Override
+    public MemberDTO findSecretaryForDepartment(String name) throws Exception {
+        if (name == null) {
+            throw new Exception("Department name can't be null");
+        }
+
+        Optional<Department> department = departmentRepository.findByShortName(name);
+        if (department.isEmpty()) {
+            throw new Exception("Department doesn't exist");
+        }
+
+        Optional<Member> secretary = memberRepository.findByRoleAndDepartmentShortName(MemberRole.SECRETARY, name);
+        return memberConverter.toDTO(secretary.get());
+    }
+
 
 }
