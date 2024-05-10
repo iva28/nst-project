@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -46,7 +48,7 @@ public class ScientificFieldControllerTests {
         List<ScientificFieldDTO> resultFields = objectMapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<ScientificFieldDTO>>() {
 
-        });
+                });
 
         Assertions.assertNotNull(resultFields);
         Assertions.assertEquals(field1.getName(), resultFields.get(0).getName());
@@ -54,5 +56,30 @@ public class ScientificFieldControllerTests {
         Mockito.verify(scientificFieldService, Mockito.times(1)).getAll();
     }
 
+    @Test
+    public void testSaveScientificFieldSuccess() throws Exception {
+        ScientificFieldDTO field = new ScientificFieldDTO(null, "Scientific field 1");
+        Mockito.when(scientificFieldService.save(field)).thenReturn(field);
+
+        mockMvc.perform(post("/scientific-field")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(field)))
+                .andExpect(status().is(HttpStatus.CREATED.value()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", equalTo(field.getName())));
+
+        Mockito.verify(scientificFieldService, Mockito.times(1)).save(field);
+    }
+
+    @Test
+    public void testSaveScientificFieldFailure() throws Exception {
+        ScientificFieldDTO field = new ScientificFieldDTO(null, "Scientific field 1");
+        Mockito.when(scientificFieldService.save(field)).thenThrow(Exception.class);
+
+        mockMvc.perform(post("/scientific-field")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(field)))
+                .andExpect(status().isBadRequest());
+    }
 
 }
