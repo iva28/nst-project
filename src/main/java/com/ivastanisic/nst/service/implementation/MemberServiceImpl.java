@@ -32,10 +32,8 @@ public class MemberServiceImpl implements MemberService {
     private final ScientificFieldService scientificFieldService;
     private final AcademicTitleHistoryService academicTitleHistoryService;
 
-    @Autowired
     private final AcademicTitleRepository academicTitleRepository;
 
-    @Autowired
     private final MemberRoleHistoryRepository memberRoleHistoryRepository;
 
     @Override
@@ -45,7 +43,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberDTO> getAll() {
-        return memberConverter.listToDTO(memberRepository.findAll());
+//        return memberConverter.listToDTO(memberRepository.findAll());
+        return memberConverter.listToDTO(memberRepository.findAllActive());
     }
 
     @Override
@@ -63,8 +62,12 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("You can't delete secretary or director. Fill their roles first");
         }
 
-        memberRepository.deleteById(id);
+        final Member memberDelete = member.get();
+        memberDelete.setRole(MemberRole.INACTIVE);
+//        memberRepository.deleteById(id);
+        memberRepository.save(memberDelete);
     }
+
 
     @Override
     public MemberDTO findById(Long id) throws Exception {
