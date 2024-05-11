@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubjectDTO implements Serializable {
-    @JsonIgnore
+//    @JsonIgnore
     private Long id;
     @NotNull
     private String name;
