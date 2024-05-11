@@ -91,7 +91,8 @@ public class AcademicTitleHistoryServiceImpl implements AcademicTitleHistoryServ
 
     @Override
     public List<AcademicTitleHistoryDTO> getAll() {
-        return null;
+        return academicTitleHistoryConverter
+                .listToDTO(academicTitleHistoryRepository.findAll());
     }
 
     @Override

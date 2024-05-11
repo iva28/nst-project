@@ -32,7 +32,6 @@ public class MemberServiceImpl implements MemberService {
     private final ScientificFieldService scientificFieldService;
     private final AcademicTitleHistoryService academicTitleHistoryService;
     private final AcademicTitleRepository academicTitleRepository;
-
     private final MemberRoleHistoryRepository memberRoleHistoryRepository;
 
     @Override

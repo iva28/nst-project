@@ -9,7 +9,7 @@ CREATE TABLE tbl_academic_title_history(
     CONSTRAINT member_fk1 FOREIGN KEY (member_id) REFERENCES tbl_member(id)
     ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT academic_title_fk2_2 FOREIGN KEY (academic_title_id) REFERENCES tbl_academic_title(id)
-    ON UPDATE CASCADE ON DELETE RESTRICT,
+    ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT scientific_field_fk3 FOREIGN KEY (scientific_field_id) REFERENCES tbl_scientific_field(id)
-    ON UPDATE CASCADE ON DELETE RESTRICT
+    ON UPDATE CASCADE ON DELETE CASCADE
 );

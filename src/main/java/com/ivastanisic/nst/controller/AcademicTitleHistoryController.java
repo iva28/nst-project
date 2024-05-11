@@ -26,4 +26,9 @@ public class AcademicTitleHistoryController {
         List<AcademicTitleHistoryDTO> academicTitleHistoryDTOS = academicTitleHistoryService.getAllByMemberId(id);
         return new ResponseEntity<>(academicTitleHistoryDTOS, HttpStatus.OK);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<AcademicTitleHistoryDTO>> getAll() {
+        return ResponseEntity.ok(academicTitleHistoryService.getAll());
+    }
 }
