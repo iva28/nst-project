@@ -4,7 +4,6 @@ import com.ivastanisic.nst.dto.SubjectDTO;
 import com.ivastanisic.nst.service.abstraction.SubjectService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +44,9 @@ public class SubjectController {
     public ResponseEntity<List<SubjectDTO>> getAllSubjectsForDepartment(@RequestParam(name = "name") String name) throws Exception {
         return ResponseEntity.ok(subjectService.findByDepartmentName(name));
     }
-
+    @PatchMapping("/update")
+    public ResponseEntity<SubjectDTO> updateSubjectEspb(@RequestBody SubjectDTO subjectDTO) throws Exception {
+        return ResponseEntity.ok(subjectService.update(subjectDTO));
+    }
 
 }

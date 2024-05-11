@@ -72,7 +72,24 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public SubjectDTO update(SubjectDTO subjectDTO) throws Exception {
-        return null;
+        if (subjectDTO == null) {
+            throw new Exception("Subject can't be null");
+        }
+
+        if (subjectDTO.getId() == null) {
+            throw new Exception("Enter subject id");
+        }
+
+        Optional<Subject> subjectFound = subjectRepository.findById(subjectDTO.getId());
+        if (subjectFound.isEmpty()) {
+            throw new Exception("You can't update subject that doesn't exist");
+        }
+
+        final Subject subject = subjectFound.get();
+        subject.setName(subjectDTO.getName());
+        subject.setEspb(subjectDTO.getEspb());
+
+        return subjectConverter.toDTO(subjectRepository.save(subject));
     }
 
     @Override
@@ -89,7 +106,7 @@ public class SubjectServiceImpl implements SubjectService {
     public List<SubjectDTO> findByDepartmentName(String name) throws Exception {
         Optional<Department> department = departmentRepository.findByShortName(name);
         if (department.isEmpty()) {
-            throw new Exception("Department with name "+ name+" doesn't exist");
+            throw new Exception("Department with name " + name + " doesn't exist");
 
         }
 
