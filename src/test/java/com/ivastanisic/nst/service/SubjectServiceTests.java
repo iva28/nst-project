@@ -166,7 +166,7 @@ public class SubjectServiceTests {
         List<Subject> subjects = List.of(subject1, subject2);
 
         String name = "D1";
-        Mockito.when(departmentRepository.findByShortName(name)).thenReturn(Optional.of(department1));
+        Mockito.when(departmentRepository.findByShortNameIgnoreCase(name)).thenReturn(Optional.of(department1));
         Mockito.when(subjectRepository.findByDepartmentShortName(name)).thenReturn(subjects);
         Mockito.when(subjectConverter.listToDTO(subjects)).thenReturn(subjectsDtos);
 
@@ -181,7 +181,7 @@ public class SubjectServiceTests {
     @Test
     public void testGetSubjectsByDepartmentFailure() {
         String name = "D1";
-        Mockito.when(departmentRepository.findByShortName(name)).thenReturn(Optional.empty());
+        Mockito.when(departmentRepository.findByShortNameIgnoreCase(name)).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> subjectService.findByDepartmentName(name));
     }
 
