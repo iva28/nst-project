@@ -152,5 +152,29 @@ public class SubjectServiceTests {
         Assertions.assertNotNull(save);
         Assertions.assertEquals(subjectDTO1, save);
     }
+    @Test
+    public void testGetSubjectsByDepartementSuccess() throws Exception {
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+        SubjectDTO subjectDTO2 = new SubjectDTO(2l, "Subj 2", 5, departmentDTO1);
 
+        List<SubjectDTO> subjectsDtos = List.of(subjectDTO1, subjectDTO2);
+
+        Department department1 = new Department(1l, "Dep 1", "D1");
+        Subject subject1 = new Subject(1l, "Subj 1", 5, department1);
+        Subject subject2 = new Subject(2l, "Subj 2", 5, department1);
+        List<Subject> subjects = List.of(subject1, subject2);
+
+        String name = "D1";
+        Mockito.when(departmentRepository.findByShortName(name)).thenReturn(Optional.of(department1));
+        Mockito.when(subjectRepository.findByDepartmentShortName(name)).thenReturn(subjects);
+        Mockito.when(subjectConverter.listToDTO(subjects)).thenReturn(subjectsDtos);
+
+        List<SubjectDTO> byDepartmentName = subjectService.findByDepartmentName(name);
+        Assertions.assertNotNull(byDepartmentName);
+
+        for (int i = 0; i < byDepartmentName.size(); i++) {
+            Assertions.assertEquals(byDepartmentName.get(i).getDepartmentDTO().getShortName(), name);
+        }
+    }
 }
