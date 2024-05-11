@@ -258,6 +258,10 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("Member doesn't exist");
         }
 
+        if (memberExists.get().getRole() == MemberRole.INACTIVE) {
+            throw new Exception("Member is inactive. Activate it before assiging director or secretary roles");
+        }
+
         if (roleChangeDTO == null) {
             throw new Exception("Role to which the member role will change, can't be null");
         }
