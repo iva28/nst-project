@@ -177,4 +177,11 @@ public class SubjectServiceTests {
             Assertions.assertEquals(byDepartmentName.get(i).getDepartmentDTO().getShortName(), name);
         }
     }
+
+    @Test
+    public void testGetSubjectsByDepartmentFailure() {
+        String name = "D1";
+        Mockito.when(departmentRepository.findByShortName(name)).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> subjectService.findByDepartmentName(name));
+    }
 }
