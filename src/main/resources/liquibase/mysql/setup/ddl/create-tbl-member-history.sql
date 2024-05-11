@@ -7,7 +7,7 @@ CREATE TABLE tbl_member_role_history(
     department_id BIGINT,
     PRIMARY KEY(id),
     CONSTRAINT member_fk2 FOREIGN KEY (member_id) REFERENCES tbl_member(id)
-    ON UPDATE CASCADE ON DELETE CASCADE,
+    ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT department_fk2 FOREIGN KEY (department_id) REFERENCES tbl_department(id)
     ON UPDATE CASCADE ON DELETE CASCADE
 );
