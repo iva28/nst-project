@@ -12,7 +12,7 @@ public interface MemberService extends DomainService<MemberDTO, Long> {
 
     List<AcademicTitleHistoryDTO> getAllAcademicTitleHistoryForMemberId(Long id) throws Exception;
 
-    MemberDTO saveMember(MemberDTO memberDTO) throws Exception;
+//    MemberDTO saveMember(MemberDTO memberDTO) throws Exception;
 
     MemberDTO updateMemberAcademicTitle(Long id, AcademicTitleDTO academicTitleDTO) throws Exception;
 
@@ -25,4 +25,6 @@ public interface MemberService extends DomainService<MemberDTO, Long> {
     MemberDTO findDirectorForDepartment(String name) throws Exception;
 
     MemberDTO findSecretaryForDepartment(String name) throws Exception;
+
+    List<MemberDTO> findAllInactiveMembers() throws Exception;
 }

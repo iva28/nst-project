@@ -17,7 +17,7 @@ import java.util.List;
 public class MemberController {
     private MemberService memberService;
 
-    @GetMapping("/all")
+    @GetMapping("/all-active")
     public ResponseEntity<List<MemberDTO>> getAllMembers() throws Exception {
         return ResponseEntity.ok(memberService.getAll());
     }
@@ -40,13 +40,13 @@ public class MemberController {
         return new ResponseEntity<>(academicTitleHistoryDTOS, HttpStatus.OK);
     }
 
-    @PostMapping("/save-member")
+    @PostMapping("/save")
     public ResponseEntity<MemberDTO> saveMember(@RequestBody @Valid MemberDTO memberDTO) throws Exception {
-        MemberDTO savedMember = memberService.saveMember(memberDTO);
+        MemberDTO savedMember = memberService.save(memberDTO);
         return ResponseEntity.ok(savedMember);
     }
 
-    @DeleteMapping("/delete-member/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteMember(@PathVariable Long id) throws Exception {
         memberService.delete(id);
         return new ResponseEntity<>("Member with id " + id + " deleted", HttpStatus.OK);
@@ -58,7 +58,7 @@ public class MemberController {
         return ResponseEntity.ok(updatedMember);
     }
 
-    @PatchMapping("/update-role/{id}")
+    @PatchMapping("/update-director-secretary-roles/{id}")
     public ResponseEntity<MemberDTO> updateMemberRole(@PathVariable Long id, @RequestBody MemberRoleChangeDTO roleChangeDTO) throws Exception {
         return ResponseEntity.ok(memberService.updateMemberRole(id, roleChangeDTO));
     }
@@ -88,5 +88,10 @@ public class MemberController {
     @GetMapping("/secretary/department")
     public ResponseEntity<MemberDTO> getSecretaryForDepartment(@RequestParam(name = "name") String name) throws Exception {
         return ResponseEntity.ok(memberService.findSecretaryForDepartment(name));
+    }
+
+    @GetMapping("/inactive")
+    public ResponseEntity<List<MemberDTO>> getAllInactiveMembers() throws Exception {
+        return ResponseEntity.ok(memberService.findAllInactiveMembers());
     }
 }

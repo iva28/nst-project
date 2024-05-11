@@ -52,7 +52,7 @@ public class ScientificFieldServiceTests {
         ScientificFieldDTO fieldDTO = new ScientificFieldDTO(1l, "Scientific field 1");
 
         Mockito.when(scientificFieldConverter.toEntity(fieldDTO)).thenReturn(field);
-        Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.empty());
+        Mockito.when(scientificFieldRepository.findByNameIgnoreCase(field.getName())).thenReturn(Optional.empty());
         Mockito.when(scientificFieldRepository.save(field)).thenReturn(field);
         Mockito.when(scientificFieldConverter.toDTO(field)).thenReturn(fieldDTO);
 
@@ -66,7 +66,7 @@ public class ScientificFieldServiceTests {
         ScientificField field = new ScientificField(1l, "Scientific field 1");
         ScientificFieldDTO fieldDTO = new ScientificFieldDTO(1l, "Scientific field 1");
 
-        Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.of(field));
+        Mockito.when(scientificFieldRepository.findByNameIgnoreCase(field.getName())).thenReturn(Optional.of(field));
         Assertions.assertThrows(Exception.class, () -> scientificFieldService.save(fieldDTO));
     }
 
@@ -94,7 +94,7 @@ public class ScientificFieldServiceTests {
         ScientificField field = new ScientificField(1l, "Scientific field 1");
         ScientificFieldDTO fieldDTO = new ScientificFieldDTO(1l, "Scientific field 1");
 
-        Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.of(field));
+        Mockito.when(scientificFieldRepository.findByNameIgnoreCase(field.getName())).thenReturn(Optional.of(field));
         Mockito.when(scientificFieldConverter.toDTO(field)).thenReturn(fieldDTO);
         Mockito.when(scientificFieldConverter.toEntity(fieldDTO)).thenReturn(field);
 
@@ -108,7 +108,7 @@ public class ScientificFieldServiceTests {
         ScientificField field = new ScientificField(1l, "Scientific field 1");
         ScientificFieldDTO fieldDTO = new ScientificFieldDTO(1l, "Scientific field 1");
 
-        Mockito.when(scientificFieldRepository.findByName(field.getName())).thenReturn(Optional.empty());
+        Mockito.when(scientificFieldRepository.findByNameIgnoreCase(field.getName())).thenReturn(Optional.empty());
         Mockito.when(scientificFieldConverter.toDTO(field)).thenReturn(fieldDTO);
         Mockito.when(scientificFieldConverter.toEntity(fieldDTO)).thenReturn(field);
 

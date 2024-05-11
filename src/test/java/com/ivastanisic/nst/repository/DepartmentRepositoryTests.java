@@ -31,7 +31,7 @@ public class DepartmentRepositoryTests {
         Department departmentSaved = departmentRepository.save(department);
         Assertions.assertNotNull(departmentSaved);
 
-        Optional<Department> departmentFound = departmentRepository.findByName(departmentSaved.getName());
+        Optional<Department> departmentFound = departmentRepository.findByNameIgnoreCase(departmentSaved.getName());
 
         Assertions.assertNotNull(departmentFound.get());
         Assertions.assertEquals(departmentSaved, departmentFound.get());
@@ -45,7 +45,7 @@ public class DepartmentRepositoryTests {
         Department departmentSaved = departmentRepository.save(department);
         Assertions.assertNotNull(departmentSaved);
 
-        Optional<Department> departmentFound = departmentRepository.findByShortName(departmentSaved.getShortName());
+        Optional<Department> departmentFound = departmentRepository.findByShortNameIgnoreCase(departmentSaved.getShortName());
 
         Assertions.assertNotNull(departmentFound.get());
         Assertions.assertEquals(departmentSaved, departmentFound.get());

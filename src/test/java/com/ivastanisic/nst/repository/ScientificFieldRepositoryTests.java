@@ -20,7 +20,7 @@ public class ScientificFieldRepositoryTests {
         ScientificField savedField = scientificFieldRepository.save(field);
         Assertions.assertNotNull(savedField);
 
-        Optional<ScientificField> foundField = scientificFieldRepository.findByName(field.getName());
+        Optional<ScientificField> foundField = scientificFieldRepository.findByNameIgnoreCase(field.getName());
         Assertions.assertNotNull(foundField);
         Assertions.assertEquals(field.getName(), foundField.get().getName());
     }

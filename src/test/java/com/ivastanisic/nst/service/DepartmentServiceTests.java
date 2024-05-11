@@ -38,7 +38,7 @@ public class DepartmentServiceTests {
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
 
         Mockito.when(departmentConverter.toEntity(departmentDTO)).thenReturn(department);
-        Mockito.when(departmentRepository.findByName(department.getName())).thenReturn(Optional.empty());
+        Mockito.when(departmentRepository.findByNameIgnoreCase(department.getName())).thenReturn(Optional.empty());
         Mockito.when(departmentRepository.save(department)).thenReturn(department);
         Mockito.when(departmentConverter.toDTO(department)).thenReturn(departmentDTO);
 
@@ -52,7 +52,7 @@ public class DepartmentServiceTests {
         Department department = new Department(1L, "Department 1", "D1");
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
 
-        Mockito.when(departmentRepository.findByName(department.getName())).thenReturn(Optional.of(department));
+        Mockito.when(departmentRepository.findByNameIgnoreCase(department.getName())).thenReturn(Optional.of(department));
         Assertions.assertThrows(Exception.class, () -> departmentService.save(departmentDTO));
     }
 

@@ -20,7 +20,7 @@ public class ScientificFieldServiceImpl implements ScientificFieldService {
 
     @Override
     public ScientificFieldDTO save(ScientificFieldDTO obj) throws Exception {
-        Optional<ScientificField> scientificField = scientificFieldRepository.findByName(obj.getName());
+        Optional<ScientificField> scientificField = scientificFieldRepository.findByNameIgnoreCase(obj.getName());
         if (scientificField.isPresent())
             throw new Exception("Scientific field with name " + obj.getName() + " doesn't exist");
         ScientificField savedScientificField = scientificFieldRepository.save(scientificFieldConverter.toEntity(obj));
@@ -60,6 +60,6 @@ public class ScientificFieldServiceImpl implements ScientificFieldService {
     public ScientificFieldDTO findByName(String name) throws Exception {
         if (name == null)
             throw new Exception("Name of scientific field can't be empty");
-        return scientificFieldConverter.toDTO(scientificFieldRepository.findByName(name).get());
+        return scientificFieldConverter.toDTO(scientificFieldRepository.findByNameIgnoreCase(name).get());
     }
 }

@@ -22,7 +22,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDTO save(DepartmentDTO obj) throws Exception {
-        Optional<Department> departmentExists = departmentRepository.findByName(obj.getName());
+        Optional<Department> departmentExists = departmentRepository.findByNameIgnoreCase(obj.getName());
         if (departmentExists.isPresent()) {
             throw new Exception("Department with name " + obj.getName() + " already exists");
         } else {
@@ -78,7 +78,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDTO findByName(String name) throws Exception {
         if (name == null)
             throw new Exception("Name of department can't be empty");
-        return departmentConverter.toDTO(departmentRepository.findByShortName(name).get());
+        return departmentConverter.toDTO(departmentRepository.findByShortNameIgnoreCase(name).get());
     }
 
 }

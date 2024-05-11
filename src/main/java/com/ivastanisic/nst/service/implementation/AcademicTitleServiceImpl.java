@@ -23,7 +23,7 @@ public class AcademicTitleServiceImpl implements AcademicTitleService {
         System.out.println("Saving academic title");
         System.out.println(obj);
 
-        Optional<AcademicTitle> existingAcademicTitle = academicTitleRepository.findByName(obj.getName());
+        Optional<AcademicTitle> existingAcademicTitle = academicTitleRepository.findByNameIgnoreCase(obj.getName());
         if (existingAcademicTitle.isPresent())
             throw new Exception("Academic title with this name already exist");
 
@@ -65,6 +65,6 @@ public class AcademicTitleServiceImpl implements AcademicTitleService {
         if (name == null)
             throw new Exception("Name of academic title can't be empty");
 
-        return academicTitleConverter.toDTO(academicTitleRepository.findByName(name).get());
+        return academicTitleConverter.toDTO(academicTitleRepository.findByNameIgnoreCase(name).get());
     }
 }

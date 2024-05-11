@@ -20,7 +20,7 @@ public class EducationTitleServiceImpl implements EducationTitleService {
 
     @Override
     public EducationTitleDTO save(EducationTitleDTO obj) throws Exception {
-        Optional<EducationTitle> educationTitle = educationTitleRepository.findByName(obj.getName());
+        Optional<EducationTitle> educationTitle = educationTitleRepository.findByNameIgnoreCase(obj.getName());
         if (educationTitle.isPresent())
             throw new Exception("Education title with name: " + obj.getName() + " already exists");
 
@@ -61,6 +61,6 @@ public class EducationTitleServiceImpl implements EducationTitleService {
     public EducationTitleDTO findByName(String name) throws Exception {
         if (name == null)
             throw new Exception("Name of education title can't be empty");
-        return educationTitleConverter.toDTO(educationTitleRepository.findByName(name).get());
+        return educationTitleConverter.toDTO(educationTitleRepository.findByNameIgnoreCase(name).get());
     }
 }
