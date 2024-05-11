@@ -92,4 +92,9 @@ public class MemberRoleHistoryServiceImpl implements MemberRoleHistoryService {
 
         return memberRoleHistoryConverter.listToDTO(roleHistories);
     }
+
+    @Override
+    public List<MemberRoleHistoryDTO> findSecretaryAndDirectorForDepartment(String name) throws Exception {
+        return memberRoleHistoryConverter.listToDTO(memberRoleHistoryRepository.findHistoryForDepartment(name));
+    }
 }

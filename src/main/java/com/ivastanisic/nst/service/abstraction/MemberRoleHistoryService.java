@@ -9,4 +9,6 @@ public interface MemberRoleHistoryService extends DomainService<MemberRoleHistor
     List<MemberRoleHistoryDTO> getAllByDepartment(String shortName) throws Exception;
 
     List<MemberRoleHistoryDTO> getAllByRole(String role) throws Exception;
+
+    List<MemberRoleHistoryDTO> findSecretaryAndDirectorForDepartment(String name) throws Exception;
 }

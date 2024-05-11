@@ -6,10 +6,7 @@ import liquibase.license.LicenseService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +33,12 @@ public class MemberRoleHistoryController {
     @GetMapping("/all")
     public ResponseEntity<List<MemberRoleHistoryDTO>> getAll() throws Exception {
         return ResponseEntity.ok(memberRoleHistoryService.getAll());
+    }
+
+    @GetMapping("/secretary/director")
+    public ResponseEntity<List<MemberRoleHistoryDTO>> getSecretaryAndDirectorForDepartment
+            (@RequestParam("name") String name) throws Exception {
+        return ResponseEntity.ok(memberRoleHistoryService.findSecretaryAndDirectorForDepartment(name));
     }
 
 }
