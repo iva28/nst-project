@@ -14,5 +14,5 @@ import java.io.Serializable;
 public class MemberRoleChangeDTO implements Serializable {
     @JsonIgnore
     private Long id;
-    private MemberRole role;
+    private String role;
 }

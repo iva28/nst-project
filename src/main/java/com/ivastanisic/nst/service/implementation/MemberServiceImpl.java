@@ -189,6 +189,10 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("Member doesn't exist");
         }
 
+        if (member.get().getRole() == MemberRole.INACTIVE) {
+            throw new Exception("Member is inactive, you can't update their academic title");
+        }
+
         Optional<AcademicTitle> academicTitleCheck = academicTitleRepository.findByName(academicTitleDTO.getName());
         if (academicTitleCheck.isEmpty()) {
             throw new Exception("Input valid academic title");
@@ -244,18 +248,20 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("Role to which the member role will change, can't be null");
         }
 
-        boolean roles = Arrays.stream(MemberRole.values()).anyMatch(memberRole -> memberRole == roleChangeDTO.getRole());
+        boolean roles = Arrays.stream(MemberRole.values())
+                .anyMatch(memberRole -> memberRole.name().equalsIgnoreCase(roleChangeDTO.getRole()));
+
         if (!roles) {
             throw new Exception("Role " + roleChangeDTO + " doesn't exist");
         }
 
-        if (roleChangeDTO.getRole() == MemberRole.NORMAL) {
+        if (roleChangeDTO.getRole() == MemberRole.NORMAL.toString()) {
             throw new Exception("This endpoint is for handling director/secretary changes only");
         }
 
         final Member member = memberExists.get();
         Optional<Member> memberWithRole = memberRepository.findByRoleAndDepartmentShortName(
-                roleChangeDTO.getRole(),
+                MemberRole.valueOf(roleChangeDTO.getRole().toUpperCase()),
                 member.getDepartment().getShortName());
 
 
@@ -265,7 +271,7 @@ public class MemberServiceImpl implements MemberService {
 
             MemberRoleHistory history = new MemberRoleHistory(
                     null,
-                    roleChangeDTO.getRole(),
+                    MemberRole.valueOf(roleChangeDTO.getRole().toUpperCase()),
                     oldRoleHolder.getStartDate(),
                     LocalDate.now(),
                     oldRoleHolder,
@@ -281,7 +287,7 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.save(oldRoleHolder);
         }
 
-        member.setRole(roleChangeDTO.getRole());
+        member.setRole(MemberRole.valueOf(roleChangeDTO.getRole().toUpperCase()));
         member.setStartDate(LocalDate.now());
 
         return memberConverter.toDTO(memberRepository.save(member));
@@ -300,7 +306,11 @@ public class MemberServiceImpl implements MemberService {
 
         final Member member = memberExists.get();
         if (member.getRole() == MemberRole.DIRECTOR || member.getRole() == MemberRole.SECRETARY) {
-            throw new Exception("You can't delete director or secretary. Change their roles first");
+            throw new Exception("You can't change department for director or secretary. Change their roles first");
+        }
+
+        if (member.getRole() == MemberRole.INACTIVE) {
+            throw new Exception("This member is inactive. You can't change their department");
         }
 
         Optional<Department> departmentExists = departmentRepository.findByShortName(memberDepartment.getShortName());

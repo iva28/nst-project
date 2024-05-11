@@ -17,7 +17,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 //    List<Member> findDepartmentId(@Param("department") Long id);
     List<Member> findByDepartmentId(Long id);
     Optional<Member> findByFirstNameAndLastNameAndDepartmentShortName(String firstName, String lastName,String shortName);
-    List<Member> findByAcademicTitleName(String name);
+    @Query("SELECT e FROM Member e WHERE e.academicTitle.name = :title AND e.role <> 'INACTIVE'")
+    List<Member> findByAcademicTitleName(@Param("title") String title);
 
     Optional<Member> findByRoleAndDepartmentShortName(MemberRole role, String shortName);
     @Query("SELECT e FROM Member e WHERE e.role != 'INACTIVE'")

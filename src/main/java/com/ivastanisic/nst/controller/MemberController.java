@@ -58,7 +58,7 @@ public class MemberController {
         return ResponseEntity.ok(updatedMember);
     }
 
-    @PatchMapping("/update-role/{id}")
+    @PatchMapping("/update-director-secretary-roles/{id}")
     public ResponseEntity<MemberDTO> updateMemberRole(@PathVariable Long id, @RequestBody MemberRoleChangeDTO roleChangeDTO) throws Exception {
         return ResponseEntity.ok(memberService.updateMemberRole(id, roleChangeDTO));
     }
