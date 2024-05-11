@@ -86,6 +86,11 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         final Subject subject = subjectFound.get();
+
+        if (subjectDTO.getEspb() < 6 || subjectDTO.getEspb() > 10) {
+            throw new Exception("Espb can't be less than 6 or more than 10");
+        }
+
         subject.setName(subjectDTO.getName());
         subject.setEspb(subjectDTO.getEspb());
 
@@ -107,7 +112,6 @@ public class SubjectServiceImpl implements SubjectService {
         Optional<Department> department = departmentRepository.findByShortName(name);
         if (department.isEmpty()) {
             throw new Exception("Department with name " + name + " doesn't exist");
-
         }
 
         return subjectConverter.listToDTO(subjectRepository.findByDepartmentShortName(name));
