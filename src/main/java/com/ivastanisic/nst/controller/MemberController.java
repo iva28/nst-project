@@ -15,13 +15,13 @@ import java.util.List;
 @RequestMapping("/member")
 @AllArgsConstructor
 public class MemberController {
-    @Autowired
     private MemberService memberService;
 
     @GetMapping("/all")
     public ResponseEntity<List<MemberDTO>> getAllMembers() throws Exception {
         return ResponseEntity.ok(memberService.getAll());
     }
+
     @GetMapping("/role")
     public ResponseEntity<List<MemberDTO>> getAllMembersByRole(@RequestParam(name = "role") String role) throws Exception {
         List<MemberDTO> memberDTOS = memberService.getAllMembersByRole(role);
@@ -79,12 +79,14 @@ public class MemberController {
 
         return ResponseEntity.ok(memberService.updateMemberDepartment(memberDepartment));
     }
+
     @GetMapping("/director/department")
-    public ResponseEntity<MemberDTO> getDirectorForDepartment(@RequestParam(name = "name") String name) throws Exception{
+    public ResponseEntity<MemberDTO> getDirectorForDepartment(@RequestParam(name = "name") String name) throws Exception {
         return ResponseEntity.ok(memberService.findDirectorForDepartment(name));
     }
+
     @GetMapping("/secretary/department")
-    public ResponseEntity<MemberDTO> getSecretaryForDepartment(@RequestParam(name = "name") String name) throws Exception{
+    public ResponseEntity<MemberDTO> getSecretaryForDepartment(@RequestParam(name = "name") String name) throws Exception {
         return ResponseEntity.ok(memberService.findSecretaryForDepartment(name));
     }
 }

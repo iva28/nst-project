@@ -21,15 +21,10 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class AcademicTitleHistoryServiceImpl implements AcademicTitleHistoryService {
-    @Autowired
     private final AcademicTitleHistoryRepository academicTitleHistoryRepository;
-    @Autowired
     private final AcademicTitleHistoryConverter academicTitleHistoryConverter;
-    @Autowired
     private final MemberRepository memberRepository;
-    @Autowired
     private final AcademicTitleRepository academicTitleRepository;
-    @Autowired
     private final ScientificFieldRepository scientificFieldRepository;
 
     @Override

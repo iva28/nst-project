@@ -19,8 +19,8 @@ import java.util.List;
 @RequestMapping("/academic-title-history")
 @AllArgsConstructor
 public class AcademicTitleHistoryController {
-    @Autowired
     private final AcademicTitleHistoryService academicTitleHistoryService;
+
     @GetMapping("/{id}")
     public ResponseEntity<List<AcademicTitleHistoryDTO>> getAllByMemberId(@PathVariable Long id) {
         List<AcademicTitleHistoryDTO> academicTitleHistoryDTOS = academicTitleHistoryService.getAllByMemberId(id);

@@ -21,25 +21,15 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class MemberServiceImpl implements MemberService {
-    @Autowired
     private final MemberRepository memberRepository;
-    @Autowired
     private final MemberConverter memberConverter;
-    @Autowired
     private final DepartmentRepository departmentRepository;
-    @Autowired
     private final AcademicTitleHistoryRepository academicTitleHistoryRepository;
-    @Autowired
     private final AcademicTitleHistoryConverter academicTitleHistoryConverter;
-    @Autowired
     private final DepartmentService departmentService;
-    @Autowired
     private final AcademicTitleService academicTitleService;
-    @Autowired
     private final EducationTitleService educationTitleService;
-    @Autowired
     private final ScientificFieldService scientificFieldService;
-    @Autowired
     private final AcademicTitleHistoryService academicTitleHistoryService;
 
     @Autowired

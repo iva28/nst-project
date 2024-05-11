@@ -17,9 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AcademicTitleController {
 
-    @Autowired
     private final AcademicTitleConverter academicTitleConverter;
-    @Autowired
     private final AcademicTitleService academicTitleService;
 
     @GetMapping

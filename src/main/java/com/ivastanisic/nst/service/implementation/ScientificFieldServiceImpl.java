@@ -15,10 +15,8 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class ScientificFieldServiceImpl implements ScientificFieldService {
-    @Autowired
-    private ScientificFieldRepository scientificFieldRepository;
-    @Autowired
-    private ScientificFieldConverter scientificFieldConverter;
+    private final ScientificFieldRepository scientificFieldRepository;
+    private final ScientificFieldConverter scientificFieldConverter;
 
     @Override
     public ScientificFieldDTO save(ScientificFieldDTO obj) throws Exception {

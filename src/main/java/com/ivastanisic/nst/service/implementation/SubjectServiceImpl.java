@@ -20,13 +20,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SubjectServiceImpl implements SubjectService {
 
-    @Autowired
     private final SubjectRepository subjectRepository;
-
-    @Autowired
     private final DepartmentRepository departmentRepository;
-
-    @Autowired
     private final SubjectConverter subjectConverter;
 
     @Override

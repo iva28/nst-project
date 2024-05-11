@@ -19,11 +19,8 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class MemberRoleHistoryServiceImpl implements MemberRoleHistoryService {
-    @Autowired
     private final MemberRoleHistoryRepository memberRoleHistoryRepository;
-    @Autowired
     private final MemberRoleHistoryConverter memberRoleHistoryConverter;
-    @Autowired
     private final DepartmentRepository departmentRepository;
 
 

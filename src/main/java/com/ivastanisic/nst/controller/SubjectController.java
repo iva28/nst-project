@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class SubjectController {
 
-    @Autowired
     private final SubjectService subjectService;
 
     @GetMapping("/all")

@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/department")
 @AllArgsConstructor
 public class DepartmentController {
-    @Autowired
     private final DepartmentService departmentService;
 
     @GetMapping("/all")
@@ -27,7 +26,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/save")
-    private ResponseEntity<DepartmentDTO> saveDepartment(@Valid @RequestBody DepartmentDTO departmentDTO) throws Exception{
+    private ResponseEntity<DepartmentDTO> saveDepartment(@Valid @RequestBody DepartmentDTO departmentDTO) throws Exception {
         DepartmentDTO departmentDTO_saved = departmentService.save(departmentDTO);
         return new ResponseEntity<DepartmentDTO>(departmentDTO_saved, HttpStatus.CREATED);
     }
@@ -39,12 +38,12 @@ public class DepartmentController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<DepartmentDTO> findDepartmentById(@PathVariable Long id) throws  Exception{
+    ResponseEntity<DepartmentDTO> findDepartmentById(@PathVariable Long id) throws Exception {
         return new ResponseEntity<DepartmentDTO>(departmentService.findById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable Long id, @Valid @RequestBody DepartmentDTO departmentDTO) throws Exception{
+    ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable Long id, @Valid @RequestBody DepartmentDTO departmentDTO) throws Exception {
         DepartmentDTO departmentUpdated = departmentService.updateById(id, departmentDTO);
         return new ResponseEntity<DepartmentDTO>(departmentUpdated, HttpStatus.ACCEPTED);
     }

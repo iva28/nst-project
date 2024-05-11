@@ -16,20 +16,22 @@ import java.util.List;
 @RequestMapping("/education-title")
 @AllArgsConstructor
 public class EducationTitleController {
-    @Autowired
     private final EducationTitleService educationTitleService;
+
     @GetMapping
     private ResponseEntity<List<EducationTitleDTO>> getAllEducationTitle() {
         List<EducationTitleDTO> educationTitleList = educationTitleService.getAll();
         return new ResponseEntity<>(educationTitleList, HttpStatus.OK);
     }
+
     @PostMapping
-    private ResponseEntity<EducationTitleDTO> saveEducationTitle(@Valid @RequestBody EducationTitleDTO educationTitleDTO) throws Exception{
+    private ResponseEntity<EducationTitleDTO> saveEducationTitle(@Valid @RequestBody EducationTitleDTO educationTitleDTO) throws Exception {
         EducationTitleDTO savedEducationTitleDTO = educationTitleService.save(educationTitleDTO);
         return new ResponseEntity<>(savedEducationTitleDTO, HttpStatus.CREATED);
     }
+
     @DeleteMapping("/{id}")
-    private ResponseEntity<Void> deleteEducationTitle(@PathVariable Long id) throws Exception{
+    private ResponseEntity<Void> deleteEducationTitle(@PathVariable Long id) throws Exception {
         educationTitleService.delete(id);
         return ResponseEntity.noContent().build();
     }

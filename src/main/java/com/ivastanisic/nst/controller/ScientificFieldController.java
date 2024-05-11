@@ -15,15 +15,16 @@ import java.util.List;
 @RequestMapping("/scientific-field")
 @AllArgsConstructor
 public class ScientificFieldController {
-    @Autowired
     private final ScientificFieldService scientificFieldService;
+
     @GetMapping
     private ResponseEntity<List<ScientificFieldDTO>> getAllScientificField() {
         List<ScientificFieldDTO> scientificFieldDTOList = scientificFieldService.getAll();
         return new ResponseEntity<>(scientificFieldDTOList, HttpStatus.OK);
     }
+
     @PostMapping
-    private ResponseEntity<ScientificFieldDTO> saveScientificField(@Valid @RequestBody ScientificFieldDTO scientificFieldDTO) throws Exception{
+    private ResponseEntity<ScientificFieldDTO> saveScientificField(@Valid @RequestBody ScientificFieldDTO scientificFieldDTO) throws Exception {
         ScientificFieldDTO savedScientificField = scientificFieldService.save(scientificFieldDTO);
         return new ResponseEntity<>(savedScientificField, HttpStatus.CREATED);
     }

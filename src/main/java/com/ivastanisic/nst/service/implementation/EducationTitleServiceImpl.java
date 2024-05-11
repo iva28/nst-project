@@ -15,15 +15,14 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class EducationTitleServiceImpl implements EducationTitleService {
-    @Autowired
     private final EducationTitleRepository educationTitleRepository;
-    @Autowired
     private final EducationTitleConverter educationTitleConverter;
+
     @Override
     public EducationTitleDTO save(EducationTitleDTO obj) throws Exception {
         Optional<EducationTitle> educationTitle = educationTitleRepository.findByName(obj.getName());
         if (educationTitle.isPresent())
-            throw new Exception("Education title with name: "+obj.getName()+" already exists");
+            throw new Exception("Education title with name: " + obj.getName() + " already exists");
 
         EducationTitle savedEducationTitle = educationTitleRepository.save(educationTitleConverter.toEntity(obj));
         return educationTitleConverter.toDTO(savedEducationTitle);
@@ -38,7 +37,7 @@ public class EducationTitleServiceImpl implements EducationTitleService {
     public void delete(Long id) throws Exception {
         Optional<EducationTitle> educationTitle = educationTitleRepository.findById(id);
         if (!educationTitle.isPresent())
-            throw new Exception("There isn't education title with id: "+id);
+            throw new Exception("There isn't education title with id: " + id);
 
         educationTitleRepository.deleteById(id);
     }
@@ -59,7 +58,7 @@ public class EducationTitleServiceImpl implements EducationTitleService {
     }
 
     @Override
-    public EducationTitleDTO findByName(String name) throws Exception{
+    public EducationTitleDTO findByName(String name) throws Exception {
         if (name == null)
             throw new Exception("Name of education title can't be empty");
         return educationTitleConverter.toDTO(educationTitleRepository.findByName(name).get());

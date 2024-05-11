@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/member-role-history")
 @AllArgsConstructor
 public class MemberRoleHistoryController {
-    @Autowired
     private final MemberRoleHistoryService memberRoleHistoryService;
 
     @GetMapping("/department")
@@ -35,7 +34,7 @@ public class MemberRoleHistoryController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<MemberRoleHistoryDTO>> getAll() throws Exception{
+    public ResponseEntity<List<MemberRoleHistoryDTO>> getAll() throws Exception {
         return ResponseEntity.ok(memberRoleHistoryService.getAll());
     }
 

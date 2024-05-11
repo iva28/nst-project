@@ -15,9 +15,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class AcademicTitleServiceImpl implements AcademicTitleService {
-    @Autowired
     private final AcademicTitleRepository academicTitleRepository;
-    @Autowired
     private final AcademicTitleConverter academicTitleConverter;
 
     @Override
