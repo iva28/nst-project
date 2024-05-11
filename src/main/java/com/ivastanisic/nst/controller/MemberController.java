@@ -17,7 +17,7 @@ import java.util.List;
 public class MemberController {
     private MemberService memberService;
 
-    @GetMapping("/all")
+    @GetMapping("/all-active")
     public ResponseEntity<List<MemberDTO>> getAllMembers() throws Exception {
         return ResponseEntity.ok(memberService.getAll());
     }
@@ -89,6 +89,7 @@ public class MemberController {
     public ResponseEntity<MemberDTO> getSecretaryForDepartment(@RequestParam(name = "name") String name) throws Exception {
         return ResponseEntity.ok(memberService.findSecretaryForDepartment(name));
     }
+
     @GetMapping("/inactive")
     public ResponseEntity<List<MemberDTO>> getAllInactiveMembers() throws Exception {
         return ResponseEntity.ok(memberService.findAllInactiveMembers());
