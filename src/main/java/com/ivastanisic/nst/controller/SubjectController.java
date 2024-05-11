@@ -41,6 +41,10 @@ public class SubjectController {
         subjectService.delete(id);
         return new ResponseEntity<>("Subject deleted", HttpStatus.OK);
     }
+    @GetMapping("/department")
+    public ResponseEntity<List<SubjectDTO>> getAllSubjectsForDepartment(@RequestParam(name = "name") String name) throws Exception {
+        return ResponseEntity.ok(subjectService.findByDepartmentName(name));
+    }
 
 
 }

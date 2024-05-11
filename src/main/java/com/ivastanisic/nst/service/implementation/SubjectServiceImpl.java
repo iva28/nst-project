@@ -84,4 +84,15 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectDTO findByName(String name) throws Exception {
         return null;
     }
+
+    @Override
+    public List<SubjectDTO> findByDepartmentName(String name) throws Exception {
+        Optional<Department> department = departmentRepository.findByShortName(name);
+        if (department.isEmpty()) {
+            throw new Exception("Department with name "+ name+" doesn't exist");
+
+        }
+
+        return subjectConverter.listToDTO(subjectRepository.findByDepartmentShortName(name));
+    }
 }

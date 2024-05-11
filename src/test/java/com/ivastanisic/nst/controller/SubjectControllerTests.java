@@ -145,4 +145,31 @@ public class SubjectControllerTests {
 
         Mockito.verify(subjectService, Mockito.times(1)).delete(id);
     }
+    
+    @Test
+    public void testGetSubjectsByDepartment() throws Exception {
+        String name = "Dep 1";
+
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+        SubjectDTO subjectDTO2 = new SubjectDTO(2l, "Subj 2", 6, departmentDTO1);
+
+        List<SubjectDTO> subjects = List.of(subjectDTO1, subjectDTO2);
+
+        Mockito.when(subjectService.findByDepartmentName(name)).thenReturn(subjects);
+        
+        MvcResult result = mockMvc.perform(get("/subject/department?name="+ name))
+                .andExpect(status().isOk()).andReturn();
+
+        List<SubjectDTO> subjectResult = objectMapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<SubjectDTO>>() {
+                });
+
+        Assertions.assertNotNull(subjectResult);
+        Assertions.assertEquals(subjects.get(0).getName(), subjectResult.get(0).getName());
+        Assertions.assertEquals(subjects.get(0).getEspb(), subjectResult.get(0).getEspb());
+        Assertions.assertEquals(subjects.get(0).getDepartmentDTO().getName(), subjectResult.get(0).getDepartmentDTO().getName());
+
+        Mockito.verify(subjectService, Mockito.times(1)).findByDepartmentName(name);
+    }
 }
