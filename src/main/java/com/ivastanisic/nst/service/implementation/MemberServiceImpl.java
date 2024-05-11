@@ -112,11 +112,25 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("Member with id " + id + " doesn't exist. You can't delete it");
         }
 
-        if (member.get().getRole() == MemberRole.SECRETARY || member.get().getRole() == MemberRole.DIRECTOR) {
-            throw new Exception("You can't delete secretary or director. Fill their roles first");
-        }
+//        if (member.get().getRole() == MemberRole.SECRETARY || member.get().getRole() == MemberRole.DIRECTOR) {
+//            throw new Exception("You can't delete secretary or director. Fill their roles first");
+//        }
 
         final Member memberDelete = member.get();
+        if (memberDelete.getRole() == MemberRole.DIRECTOR
+                || memberDelete.getRole() == MemberRole.SECRETARY) {
+
+            MemberRoleHistory memberRoleHistory = new MemberRoleHistory(
+                    null,
+                    memberDelete.getRole(),
+                    memberDelete.getStartDate(),
+                    LocalDate.now(),
+                    memberDelete,
+                    memberDelete.getDepartment()
+            );
+
+            memberRoleHistoryRepository.save(memberRoleHistory);
+        }
         memberDelete.setRole(MemberRole.INACTIVE);
 //        memberRepository.deleteById(id);
         memberRepository.save(memberDelete);
@@ -356,6 +370,11 @@ public class MemberServiceImpl implements MemberService {
 
         Optional<Member> secretary = memberRepository.findByRoleAndDepartmentShortName(MemberRole.SECRETARY, name);
         return memberConverter.toDTO(secretary.get());
+    }
+
+    @Override
+    public List<MemberDTO> findAllInactiveMembers() throws Exception {
+        return memberConverter.listToDTO(memberRepository.findAllInactive());
     }
 
 

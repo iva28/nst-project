@@ -23,4 +23,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByRoleAndDepartmentShortName(MemberRole role, String shortName);
     @Query("SELECT e FROM Member e WHERE e.role != 'INACTIVE'")
     List<Member> findAllActive();
+    @Query("SELECT e FROM Member e WHERE e.role = 'INACTIVE'")
+    List<Member> findAllInactive();
 }
