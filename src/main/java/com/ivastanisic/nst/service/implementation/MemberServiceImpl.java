@@ -35,8 +35,64 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRoleHistoryRepository memberRoleHistoryRepository;
 
     @Override
-    public MemberDTO save(MemberDTO obj) throws Exception {
-        return null;
+    @Transactional
+    public MemberDTO save(MemberDTO memberDTO) throws Exception {
+        if (memberDTO == null) {
+            throw new Exception("You can't save member without data");
+        }
+        Optional<Member> memberExists = memberRepository.findByFirstNameAndLastNameAndDepartmentShortName(
+                memberDTO.getFirstName(),
+                memberDTO.getLastName(),
+                memberDTO.getDepartmentDTO().getShortName());
+
+        if (!memberExists.isEmpty()) {
+            throw new Exception("Member already exists");
+        }
+
+        if (memberDTO.getStartDate().isBefore(LocalDate.now())) {
+            throw new Exception("Member start date can't be before today's date");
+        }
+
+        DepartmentDTO departmentDTO = departmentService.findByName(memberDTO.getDepartmentDTO().getShortName());
+        if (departmentDTO == null) {
+            throw new Exception("Department doesn't exist");
+        } else {
+            memberDTO.setDepartmentDTO(departmentDTO);
+        }
+
+        AcademicTitleDTO academicTitleDTO = academicTitleService.findByName(memberDTO.getAcademicTitleDTO().getName());
+        if (academicTitleDTO == null) {
+            throw new Exception("Academic title doesn't exist");
+        } else {
+            memberDTO.setAcademicTitleDTO(academicTitleDTO);
+        }
+
+        EducationTitleDTO educationTitleDTO = educationTitleService.findByName(memberDTO.getEducationTitleDTO().getName());
+        if (educationTitleDTO == null) {
+            throw new Exception("Education title doesn't exist");
+        } else {
+            memberDTO.setEducationTitleDTO(educationTitleDTO);
+        }
+
+        ScientificFieldDTO scientificFieldDTO = scientificFieldService.findByName(memberDTO.getScientificFieldDTO().getName());
+        if (scientificFieldDTO == null) {
+            throw new Exception("Scientific field doesn't exist");
+        } else {
+            memberDTO.setScientificFieldDTO(scientificFieldDTO);
+        }
+
+        memberDTO.setAcademicTitleHistoryDTOS(new ArrayList<>());
+
+        //        academic title history save
+        Member savedMember = memberRepository.save(memberConverter.toEntity(memberDTO));
+        academicTitleHistoryService.save(new AcademicTitleHistoryDTO(
+                -1L,
+                LocalDate.now(),
+                null,
+                savedMember.getId(),
+                memberDTO.getAcademicTitleDTO(),
+                memberDTO.getScientificFieldDTO()));
+        return memberConverter.toDTO(savedMember);
     }
 
     @Override
@@ -120,62 +176,6 @@ public class MemberServiceImpl implements MemberService {
         return academicTitleHistoryConverter.listToDTO(academicTitleHistoryRepository.findByMemberId(id));
     }
 
-    @Transactional
-    @Override
-    public MemberDTO saveMember(MemberDTO memberDTO) throws Exception {
-        if (memberDTO == null) {
-            throw new Exception("You can't save member without data");
-        }
-        Optional<Member> memberExists = memberRepository.findByFirstNameAndLastNameAndDepartmentShortName(
-                memberDTO.getFirstName(),
-                memberDTO.getLastName(),
-                memberDTO.getDepartmentDTO().getShortName());
-
-        if (!memberExists.isEmpty()) {
-            throw new Exception("Member already exists");
-        }
-
-        DepartmentDTO departmentDTO = departmentService.findByName(memberDTO.getDepartmentDTO().getShortName());
-        if (departmentDTO == null) {
-            throw new Exception("Department doesn't exist");
-        } else {
-            memberDTO.setDepartmentDTO(departmentDTO);
-        }
-
-        AcademicTitleDTO academicTitleDTO = academicTitleService.findByName(memberDTO.getAcademicTitleDTO().getName());
-        if (academicTitleDTO == null) {
-            throw new Exception("Academic title doesn't exist");
-        } else {
-            memberDTO.setAcademicTitleDTO(academicTitleDTO);
-        }
-
-        EducationTitleDTO educationTitleDTO = educationTitleService.findByName(memberDTO.getEducationTitleDTO().getName());
-        if (educationTitleDTO == null) {
-            throw new Exception("Education title doesn't exist");
-        } else {
-            memberDTO.setEducationTitleDTO(educationTitleDTO);
-        }
-
-        ScientificFieldDTO scientificFieldDTO = scientificFieldService.findByName(memberDTO.getScientificFieldDTO().getName());
-        if (scientificFieldDTO == null) {
-            throw new Exception("Scientific field doesn't exist");
-        } else {
-            memberDTO.setScientificFieldDTO(scientificFieldDTO);
-        }
-
-        memberDTO.setAcademicTitleHistoryDTOS(new ArrayList<>());
-
-        //        academic title history save
-        Member savedMember = memberRepository.save(memberConverter.toEntity(memberDTO));
-        academicTitleHistoryService.save(new AcademicTitleHistoryDTO(
-                -1L,
-                LocalDate.now(),
-                null,
-                savedMember.getId(),
-                memberDTO.getAcademicTitleDTO(),
-                memberDTO.getScientificFieldDTO()));
-        return memberConverter.toDTO(savedMember);
-    }
 
     @Override
     @Transactional
@@ -193,7 +193,7 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("Member is inactive, you can't update their academic title");
         }
 
-        Optional<AcademicTitle> academicTitleCheck = academicTitleRepository.findByName(academicTitleDTO.getName());
+        Optional<AcademicTitle> academicTitleCheck = academicTitleRepository.findByNameIgnoreCase(academicTitleDTO.getName());
         if (academicTitleCheck.isEmpty()) {
             throw new Exception("Input valid academic title");
         }
@@ -224,7 +224,7 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("Academic title can't be null");
         }
 
-        Optional<AcademicTitle> academicTitle = academicTitleRepository.findByName(name);
+        Optional<AcademicTitle> academicTitle = academicTitleRepository.findByNameIgnoreCase(name);
         if (academicTitle.isEmpty()) {
             throw new Exception("Academic title doesn't exist");
         }
@@ -313,7 +313,7 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("This member is inactive. You can't change their department");
         }
 
-        Optional<Department> departmentExists = departmentRepository.findByShortName(memberDepartment.getShortName());
+        Optional<Department> departmentExists = departmentRepository.findByShortNameIgnoreCase(memberDepartment.getShortName());
         if (departmentExists.isEmpty()) {
             throw new Exception("Department doesn't exist");
         }
@@ -331,7 +331,7 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("Department name can't be null");
         }
 
-        Optional<Department> department = departmentRepository.findByShortName(name);
+        Optional<Department> department = departmentRepository.findByShortNameIgnoreCase(name);
         if (department.isEmpty()) {
             throw new Exception("Department doesn't exist");
         }
@@ -349,7 +349,7 @@ public class MemberServiceImpl implements MemberService {
             throw new Exception("Department name can't be null");
         }
 
-        Optional<Department> department = departmentRepository.findByShortName(name);
+        Optional<Department> department = departmentRepository.findByShortNameIgnoreCase(name);
         if (department.isEmpty()) {
             throw new Exception("Department doesn't exist");
         }

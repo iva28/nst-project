@@ -42,7 +42,7 @@ public class MemberController {
 
     @PostMapping("/save-member")
     public ResponseEntity<MemberDTO> saveMember(@RequestBody @Valid MemberDTO memberDTO) throws Exception {
-        MemberDTO savedMember = memberService.saveMember(memberDTO);
+        MemberDTO savedMember = memberService.save(memberDTO);
         return ResponseEntity.ok(savedMember);
     }
 

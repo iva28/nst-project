@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface EducationTitleRepository extends JpaRepository<EducationTitle, Long> {
-    Optional<EducationTitle> findByName(String name);
+    Optional<EducationTitle> findByNameIgnoreCase(String name);
 }

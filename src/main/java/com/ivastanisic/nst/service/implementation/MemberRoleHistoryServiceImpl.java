@@ -65,7 +65,7 @@ public class MemberRoleHistoryServiceImpl implements MemberRoleHistoryService {
             throw new Exception("Department name can't be null");
         }
 
-        Optional<Department> department = departmentRepository.findByShortName(shortName);
+        Optional<Department> department = departmentRepository.findByShortNameIgnoreCase(shortName);
         if (department.isEmpty()) {
             throw new Exception("Department doesn't exist");
         }

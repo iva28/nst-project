@@ -109,7 +109,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<SubjectDTO> findByDepartmentName(String name) throws Exception {
-        Optional<Department> department = departmentRepository.findByShortName(name);
+        Optional<Department> department = departmentRepository.findByShortNameIgnoreCase(name);
         if (department.isEmpty()) {
             throw new Exception("Department with name " + name + " doesn't exist");
         }
