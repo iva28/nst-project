@@ -184,4 +184,31 @@ public class SubjectServiceTests {
         Mockito.when(departmentRepository.findByShortName(name)).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> subjectService.findByDepartmentName(name));
     }
+
+    @Test
+    public void testUpdateSubjectSuccess() throws Exception {
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+
+        Department department1 = new Department(1l, "Dep 1", "D1");
+        Subject subject1 = new Subject(1l, "Subj 1", 5, department1);
+
+
+        Mockito.when(subjectRepository.findById(subjectDTO1.getId()))
+                .thenReturn(Optional.of(subject1));
+        Mockito.when(subjectConverter.toDTO(subject1)).thenReturn(subjectDTO1);
+        Mockito.when(subjectRepository.save(subject1)).thenReturn(subject1);
+
+        SubjectDTO updated = subjectService.update(subjectDTO1);
+        Assertions.assertNotNull(updated);
+        Assertions.assertEquals(subjectDTO1, updated);
+    }
+
+    @Test
+    public void testUpdateSubjectFailure() {
+        Subject subject1 = new Subject(1l, "Subj 1", 5, null);
+
+        Mockito.when(subjectRepository.findById(subject1.getId())).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> subjectService.update(new SubjectDTO()));
+    }
 }
