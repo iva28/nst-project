@@ -278,11 +278,17 @@ public class MemberServiceImpl implements MemberService {
                 MemberRole.valueOf(roleChangeDTO.getRole().toUpperCase()),
                 member.getDepartment().getShortName());
 
+        MemberDTO opposite = findById(id);
+        Member oldRoleHolder = null;
 
         if (!memberWithRole.isEmpty()) {
-//            Saving member role history
-            Member oldRoleHolder = memberWithRole.get();
+            oldRoleHolder = memberWithRole.get();
+        } else if (opposite.getRole() == MemberRole.SECRETARY
+                || opposite.getRole() == MemberRole.DIRECTOR) {
+            oldRoleHolder = memberConverter.toEntity(opposite);
+        }
 
+        if (oldRoleHolder != null)  {
             MemberRoleHistory history = new MemberRoleHistory(
                     null,
                     MemberRole.valueOf(roleChangeDTO.getRole().toUpperCase()),
