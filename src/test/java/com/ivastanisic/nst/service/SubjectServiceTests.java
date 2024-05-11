@@ -188,10 +188,10 @@ public class SubjectServiceTests {
     @Test
     public void testUpdateSubjectSuccess() throws Exception {
         DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
-        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 8, departmentDTO1);
 
         Department department1 = new Department(1l, "Dep 1", "D1");
-        Subject subject1 = new Subject(1l, "Subj 1", 5, department1);
+        Subject subject1 = new Subject(1l, "Subj 1", 8, department1);
 
 
         Mockito.when(subjectRepository.findById(subjectDTO1.getId()))
