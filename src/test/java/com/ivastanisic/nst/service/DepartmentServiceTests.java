@@ -28,7 +28,7 @@ public class DepartmentServiceTests {
     private DepartmentRepository departmentRepository;
 
     @Test
-    public void saveDepartmentSuccessTest() throws Exception {
+    public void testSaveDepartmentSuccessTest() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
 
@@ -43,7 +43,7 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void saveDepartmentFailureTest() {
+    public void testSaveDepartmentFailureTest() {
         Department department = new Department(1L, "Department 1", "D1");
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
 
@@ -52,7 +52,7 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void findByIdSuccessTest() throws Exception {
+    public void testFindByIdSuccessTest() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
 
@@ -65,14 +65,14 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void findByIdFailureTest() throws Exception {
+    public void testFindByIdFailureTest() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> departmentService.findById(department.getId()));
     }
 
     @Test
-    public void deleteDepartmentSuccess() throws Exception {
+    public void testDeleteDepartmentSuccess() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.of(department));
         departmentService.delete(department.getId());
@@ -80,21 +80,21 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void deleteDepartmentFailure() throws Exception {
+    public void testDeleteDepartmentFailure() throws Exception {
         Department department = new Department(1L, "Department 1", "D1");
         Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> departmentService.delete(department.getId()));
     }
 
     @Test
-    public void getAllDepartments() {
+    public void testGetAllDepartments() {
         Department department1 = new Department(4l, "Department 4", "D4");
         Department department2 = new Department(5l, "Department 5", "D5");
 
         List<Department> departments = List.of(department1, department2);
 
-        DepartmentDTO departmentDTO1 = new DepartmentDTO(4l,  "Department 4", "D4");
-        DepartmentDTO departmentDTO2 = new DepartmentDTO(5l,  "Department 5", "D5");
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(4l, "Department 4", "D4");
+        DepartmentDTO departmentDTO2 = new DepartmentDTO(5l, "Department 5", "D5");
 
         List<DepartmentDTO> departmentsDepartmentDTOS = List.of(departmentDTO1, departmentDTO2);
 
@@ -112,7 +112,7 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void deleteDepartmentSuccessTest() throws Exception{
+    public void testDeleteDepartmentSuccessTest() throws Exception {
         Department department = new Department(4l, "Department 4", "D4");
         Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.of(department));
         departmentService.delete(department.getId());
@@ -120,14 +120,14 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void deleteDepartmentFailureTest() throws Exception{
+    public void testDeleteDepartmentFailureTest() throws Exception {
         Department department = new Department(4l, "Department 4", "D4");
         Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> departmentService.delete(department.getId()));
     }
 
     @Test
-    public void updateDepartmentByIdSuccess() throws Exception {
+    public void testUpdateDepartmentByIdSuccess() throws Exception {
         Long id = 1L;
         String updatedName = "Department 2";
         String updatedShortName = "D2";
@@ -152,13 +152,37 @@ public class DepartmentServiceTests {
         Assertions.assertEquals(departmentDTOUpdate.getName(), updatedDepartment.getName());
         Assertions.assertEquals(departmentDTOUpdate.getShortName(), updatedDepartment.getShortName());
     }
+
     @Test
-    public void updateDepartmentByIdFailure() throws Exception{
+    public void testUpdateDepartmentByIdFailure() throws Exception {
         Long id = 1L;
         DepartmentDTO departmentDTO = new DepartmentDTO(null, "Department 1", "D1");
         Mockito.when(departmentRepository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> departmentService.updateById(id, departmentDTO));
     }
 
+    @Test
+    public void testFindDepartmentByNameSuccess() throws Exception {
+        String name = "Department 1";
+        Department department = new Department(1L, "Department 1", "D1");
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
 
+        Mockito.when(departmentRepository.findByShortNameIgnoreCase(name)).thenReturn(Optional.of(department));
+        Mockito.when(departmentConverter.toDTO(department)).thenReturn(departmentDTO);
+
+        DepartmentDTO byName = departmentService.findByName(name);
+        Assertions.assertNotNull(byName);
+        Assertions.assertEquals(departmentDTO.getName(), byName.getName());
+    }
+
+    @Test
+    public void testFindDepartmentByNameFailure() {
+        Assertions.assertThrows(Exception.class, () -> departmentService.findByName(null));
+    }
+
+    @Test
+    public void testUpdateDepartmentNotImplementedYet() throws Exception {
+        DepartmentDTO update = departmentService.update(new DepartmentDTO());
+        Assertions.assertNull(update);
+    }
 }
