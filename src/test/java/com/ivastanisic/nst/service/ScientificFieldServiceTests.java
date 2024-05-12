@@ -115,4 +115,26 @@ public class ScientificFieldServiceTests {
 
         Assertions.assertThrows(Exception.class, () -> scientificFieldService.findByName(field.getName()));
     }
+
+    @Test
+    public void testFindScientificFieldByIdNotImplementedYet() throws Exception {
+        ScientificFieldDTO byId = scientificFieldService.findById(1L);
+        Assertions.assertNull(byId);
+    }
+    @Test
+    public void testUpdateScientificFieldNotImplementedYet() throws Exception {
+        ScientificFieldDTO update = scientificFieldService.update(new ScientificFieldDTO());
+        Assertions.assertNull(update);
+    }
+
+    @Test
+    public void testUpdateScientificFieldByIdNotImplementedYet() throws Exception {
+        ScientificFieldDTO fieldDTO = scientificFieldService.updateById(1l, new ScientificFieldDTO());
+        Assertions.assertNull(fieldDTO);
+    }
+    @Test
+    public void testFindScientificFieldByNameNull() throws Exception {
+        Assertions.assertThrows(Exception.class, () -> scientificFieldService.findByName(null));
+    }
+
 }
