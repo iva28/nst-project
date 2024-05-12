@@ -31,20 +31,35 @@ public class SubjectServiceImpl implements SubjectService {
             throw new Exception("Subject can;t be empty");
         }
 
-        if (obj.getDepartmentDTO().getId() == null) {
+        if (obj.getName() == null || obj.getName().equals("") || obj.getName().equals("string")) {
+            throw new Exception("Subject must have a name");
+        }
+
+        if (obj.getEspb() < 6 || obj.getEspb() > 10) {
+            throw new Exception("Espb can't be less than 6 or more than 10");
+        }
+
+
+        if (obj.getDepartmentDTO().getShortName().equals("string")) {
             throw new Exception("Subject must belong to a department");
         }
+        Optional<Department> department = departmentRepository.
+                findByShortNameIgnoreCase(obj.getDepartmentDTO().getShortName().toUpperCase());
 
-        Optional<Department> department = departmentRepository.findById(obj.getDepartmentDTO().getId());
+        System.out.println(department);
         if (department.isEmpty()) {
-            departmentRepository.save(subjectConverter.toEntity(obj).getDepartment());
+            throw new Exception("You can't assign subject to department that doesn't exist");
         }
 
-        Optional<Subject> subject = subjectRepository.findById(obj.getId());
+        Optional<Subject> subject = subjectRepository.findByName(obj.getName());
         if (subject.isPresent())
             throw new Exception("Subject with this id already exists");
 
-        return subjectConverter.toDTO(subjectRepository.save(subjectConverter.toEntity(obj)));
+        final Subject saveSubject = subjectConverter.toEntity(obj);
+        saveSubject.setDepartment(department.get());
+
+        System.out.println(saveSubject);
+        return subjectConverter.toDTO(subjectRepository.save(saveSubject));
     }
 
     @Override
@@ -91,9 +106,13 @@ public class SubjectServiceImpl implements SubjectService {
             throw new Exception("Espb can't be less than 6 or more than 10");
         }
 
-        subject.setName(subjectDTO.getName());
-        subject.setEspb(subjectDTO.getEspb());
+        if (subjectDTO.getName() != null
+                && !subjectDTO.getName().equals("")
+                && !subjectDTO.getName().equals("string")) {
+            subject.setName(subjectDTO.getName());
+        }
 
+        subject.setEspb(subjectDTO.getEspb());
         return subjectConverter.toDTO(subjectRepository.save(subject));
     }
 
