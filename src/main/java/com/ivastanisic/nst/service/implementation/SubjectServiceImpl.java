@@ -102,8 +102,9 @@ public class SubjectServiceImpl implements SubjectService {
 
         final Subject subject = subjectFound.get();
 
-        if (subjectDTO.getEspb() < 6 || subjectDTO.getEspb() > 10) {
-            throw new Exception("Espb can't be less than 6 or more than 10");
+        if (subjectDTO.getEspb() >= 6 && subjectDTO.getEspb() <= 10) {
+//            throw new Exception("Espb can't be less than 6 or more than 10");
+            subject.setEspb(subjectDTO.getEspb());
         }
 
         if (subjectDTO.getName() != null
@@ -112,7 +113,6 @@ public class SubjectServiceImpl implements SubjectService {
             subject.setName(subjectDTO.getName());
         }
 
-        subject.setEspb(subjectDTO.getEspb());
         return subjectConverter.toDTO(subjectRepository.save(subject));
     }
 
