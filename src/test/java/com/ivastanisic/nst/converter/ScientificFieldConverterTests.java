@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class ScientificFieldConverterTests {
 
@@ -31,6 +33,6 @@ public class ScientificFieldConverterTests {
 
         ScientificFieldDTO dto = scientificFieldConverter.toDTO(field);
         Assertions.assertNotNull(dto);
-        Assertions.assertEquals(fieldDTO,dto);
+        Assertions.assertEquals(fieldDTO, dto);
     }
 }
