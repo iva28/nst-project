@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+@ActiveProfiles("test")
 @WebMvcTest(ScientificFieldController.class)
 public class ScientificFieldControllerTests {
 
@@ -100,7 +102,7 @@ public class ScientificFieldControllerTests {
         Long id = 1l;
         Mockito.doThrow(Exception.class).when(scientificFieldService).delete(id);
 
-        mockMvc.perform(delete("/scientific-field/{id}",id))
+        mockMvc.perform(delete("/scientific-field/{id}", id))
                 .andExpect(status().isBadRequest());
 
         Mockito.verify(scientificFieldService, Mockito.times(1)).delete(id);

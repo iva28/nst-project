@@ -6,9 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class DepartmentRepositoryTests {
     @Autowired
@@ -51,6 +53,7 @@ public class DepartmentRepositoryTests {
         Assertions.assertEquals(departmentSaved, departmentFound.get());
         Assertions.assertEquals(departmentSaved.getShortName(), departmentFound.get().getShortName());
     }
+
     @Test
     public void findByIdSuccessTest() {
         Department department = new Department(1L, "Department 1", "D1");
