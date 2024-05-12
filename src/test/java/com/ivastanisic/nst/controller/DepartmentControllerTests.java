@@ -136,7 +136,7 @@ public class DepartmentControllerTests {
     }
 
     @Test
-    public void testUpdateDepartmentFailure() throws Exception {
+    public void testUpdateDepartmentByIdFailure() throws Exception {
         Long id = 1l;
         DepartmentDTO department = new DepartmentDTO(null, "Department 1", "D1");
 
@@ -151,7 +151,7 @@ public class DepartmentControllerTests {
     }
 
     @Test
-    public void testUpdateDepartmentSuccess() throws Exception {
+    public void testUpdateDepartmentByIdSuccess() throws Exception {
         Long id = 1l;
         DepartmentDTO department = new DepartmentDTO(null, "Department 1", "D1");
 
@@ -165,5 +165,30 @@ public class DepartmentControllerTests {
         Mockito.verify(departmentService, Mockito.times(1)).updateById(id, department);
     }
 
+    @Test
+    public void testUpdateDepartmentSuccess() throws Exception {
+        DepartmentDTO department = new DepartmentDTO(1L, "Department 1", "D1");
+        Mockito.when(departmentService.update(department)).thenReturn(department);
+
+        mockMvc.perform(patch("/department/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(department)))
+                .andExpect(status().isOk());
+
+        Mockito.verify(departmentService, Mockito.times(1)).update(department);
+    }
+
+    @Test
+    public void testUpdateDepartmentFailure() throws Exception {
+        DepartmentDTO department = new DepartmentDTO(1L, "Department 1", "D1");
+        Mockito.when(departmentService.update(department)).thenThrow(Exception.class);
+
+        mockMvc.perform(patch("/department/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(department)))
+                .andExpect(status().isBadRequest());
+
+        Mockito.verify(departmentService, Mockito.times(1)).update(department);
+    }
 
 }
