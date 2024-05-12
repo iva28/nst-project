@@ -25,11 +25,20 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<Department> departmentExists = departmentRepository.findByNameIgnoreCase(obj.getName());
         if (departmentExists.isPresent()) {
             throw new Exception("Department with name " + obj.getName() + " already exists");
-        } else {
-            Department department = departmentConverter.toEntity(obj);
-            department = departmentRepository.save(department);
-            return departmentConverter.toDTO(department);
         }
+
+        if (obj.getName() == null || obj.getName().equals("string")) {
+            throw new Exception("Can't save department without name");
+        }
+
+        if (obj.getShortName() == null || obj.getShortName().equals("string")) {
+            throw new Exception("Can't save department without short name");
+        }
+
+        Department department = departmentConverter.toEntity(obj);
+        department = departmentRepository.save(department);
+        return departmentConverter.toDTO(department);
+
     }
 
     @Override
@@ -56,7 +65,32 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDTO update(DepartmentDTO departmentDTO) throws Exception {
-        return null;
+        if (departmentDTO == null) {
+            throw new Exception("Department can't be null");
+        }
+
+        if (departmentDTO.getId() == null) {
+            throw new Exception("Department id can't be null");
+        }
+
+        Optional<Department> departmentExists = departmentRepository.findById(departmentDTO.getId());
+        if (!departmentExists.isPresent()) {
+            throw new Exception("Department with id " + departmentDTO.getId() + " doesn't exist");
+        }
+
+        Department existingDepartment = departmentExists.get();
+
+        if (departmentDTO.getName() != null && !departmentDTO.getName().equals("")
+                && !departmentDTO.getName().equals("string")) {
+            existingDepartment.setName(departmentDTO.getName());
+        }
+
+        if (departmentDTO.getShortName() != null && !departmentDTO.getShortName().equals("")
+                && !departmentDTO.getShortName().equals("string")) {
+            existingDepartment.setShortName(departmentDTO.getShortName());
+        }
+
+        return departmentConverter.toDTO(departmentRepository.save(existingDepartment));
     }
 
     @Override

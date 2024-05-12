@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class DepartmentDTO implements Serializable {
 
-    @JsonIgnore
+//    @JsonIgnore
     private Long id;
 //    @NotNull
     private String name;

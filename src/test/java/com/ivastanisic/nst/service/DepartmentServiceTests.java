@@ -180,9 +180,34 @@ public class DepartmentServiceTests {
         Assertions.assertThrows(Exception.class, () -> departmentService.findByName(null));
     }
 
+//    @Test
+//    public void testUpdateDepartmentNotImplementedYet() throws Exception {
+//        DepartmentDTO update = departmentService.update(new DepartmentDTO(1l, null, null));
+//        Assertions.assertNull(update);
+//    }
+//
     @Test
-    public void testUpdateDepartmentNotImplementedYet() throws Exception {
-        DepartmentDTO update = departmentService.update(new DepartmentDTO());
-        Assertions.assertNull(update);
+    public void testUpdateDepartmentSuccess() throws Exception {
+        Department department = new Department(1L, "Department 1", "D1");
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
+
+        Mockito.when(departmentRepository.findById(department.getId())).thenReturn(Optional.of(department));
+        Mockito.when(departmentRepository.save(department)).thenReturn(department);
+        Mockito.when(departmentConverter.toDTO(department)).thenReturn(departmentDTO);
+
+        DepartmentDTO update = departmentService.update(departmentDTO);
+        Assertions.assertNotNull(update);
+        Assertions.assertEquals(departmentDTO, update);
     }
+
+    @Test
+    public void testUpdateDepartmentEmpty() {
+        Assertions.assertThrows(Exception.class, () -> departmentService.update(null));
+    }
+
+    @Test
+    public void testUpdateDepartmentNullId() {
+        Assertions.assertThrows(Exception.class, () -> departmentService.update(new DepartmentDTO(null, null, null)));
+    }
+
 }
