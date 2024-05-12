@@ -5,6 +5,7 @@ import com.ivastanisic.nst.domain.Department;
 import com.ivastanisic.nst.dto.DepartmentDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,5 +32,17 @@ public class DepartmentConverterTests {
         Assertions.assertEquals(departmentDTO.getId(), department.getId());
         Assertions.assertEquals(departmentDTO.getName(), department.getName());
         Assertions.assertEquals(departmentDTO.getShortName(), department.getShortName());
+    }
+
+    @Test
+    public void toEntityTestFail() {
+        Department entity = departmentConverter.toEntity(null);
+        Assertions.assertNull(entity);
+    }
+
+    @Test
+    public void toDtoTestFail() {
+        DepartmentDTO dto = departmentConverter.toDTO(null);
+        Assertions.assertNull(dto);
     }
 }

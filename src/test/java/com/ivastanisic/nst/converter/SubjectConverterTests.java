@@ -54,4 +54,17 @@ public class SubjectConverterTests {
         Assertions.assertEquals(subjectDTO, dto);
     }
 
+    @Test
+    public void toEntityTestFail() {
+        Subject entity = subjectConverter.toEntity(null);
+        Assertions.assertNull(entity);
+    }
+
+    @Test
+    public void toDtoTestFail() {
+        SubjectDTO dto = subjectConverter.toDTO(null);
+        Assertions.assertNull(dto);
+    }
+
+
 }

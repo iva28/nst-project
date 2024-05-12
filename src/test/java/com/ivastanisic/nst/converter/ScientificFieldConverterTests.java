@@ -35,4 +35,17 @@ public class ScientificFieldConverterTests {
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(fieldDTO, dto);
     }
+
+    @Test
+    public void toEntityTestFail() {
+        ScientificField entity = scientificFieldConverter.toEntity(null);
+        Assertions.assertNull(entity);
+    }
+
+    @Test
+    public void toDtoTestFail() {
+        ScientificFieldDTO dto = scientificFieldConverter.toDTO(null);
+        Assertions.assertNull(dto);
+    }
+
 }
