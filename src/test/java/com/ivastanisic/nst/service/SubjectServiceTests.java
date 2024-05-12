@@ -139,7 +139,7 @@ public class SubjectServiceTests {
 
         DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
         SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
-        
+
         Mockito.when(departmentRepository.findById(department1.getId())).thenReturn(Optional.of(department1));
         Mockito.when(subjectRepository.findById(subject1.getId())).thenReturn(Optional.empty());
         Mockito.when(subjectConverter.toEntity(subjectDTO1)).thenReturn(subject1);
@@ -153,6 +153,7 @@ public class SubjectServiceTests {
         Assertions.assertNotNull(save);
         Assertions.assertEquals(subjectDTO1, save);
     }
+
     @Test
     public void testGetSubjectsByDepartementSuccess() throws Exception {
         DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
@@ -212,4 +213,68 @@ public class SubjectServiceTests {
         Mockito.when(subjectRepository.findById(subject1.getId())).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> subjectService.update(new SubjectDTO()));
     }
+
+    @Test
+    public void testFindSubjectByNameNotImplementedYet() throws Exception {
+        SubjectDTO byName = subjectService.findByName(null);
+        Assertions.assertNull(byName);
+    }
+
+    @Test
+    public void testUpdateSubjectByIdNotImplementedYet() throws Exception {
+        SubjectDTO subjectDTO = subjectService.updateById(1l, new SubjectDTO());
+        Assertions.assertNull(subjectDTO);
+    }
+
+    @Test
+    public void testUpdateSubjectEmpty() {
+        Assertions.assertThrows(Exception.class, () -> subjectService.update(null));
+    }
+
+    @Test
+    public void testUpdateSubjectBadEspb() {
+        SubjectDTO subjectDTO2 = new SubjectDTO(2l, "Subj 2", 0, null);
+        Assertions.assertThrows(Exception.class, () -> subjectService.update(subjectDTO2));
+    }
+
+    @Test
+    public void testSaveSubjectEmpty() {
+        Assertions.assertThrows(Exception.class, () -> subjectService.save(null));
+    }
+
+    @Test
+    public void testSaveSubjectDepartmentEmpty() {
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(null, "Dep 1", "D1");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+        Assertions.assertThrows(Exception.class, () -> subjectService.save(subjectDTO1));
+    }
+
+    @Test
+    public void testSaveSubjectNonExistingDepartment() throws Exception {
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(1l, "Dep 1", "D1");
+        Department department = new Department(1l, "Dep 1", "D1");
+
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+        Subject subject = new Subject(1l, "Subj 1", 5, department);
+
+        Mockito.when(departmentRepository.findById(departmentDTO1.getId())).thenReturn(Optional.empty());
+        Mockito.when(departmentRepository.save(department)).thenReturn(department);
+        Mockito.when(departmentConverter.toDTO(department)).thenReturn(departmentDTO1);
+        Mockito.when(subjectRepository.save(subject)).thenReturn(subject);
+        Mockito.when(subjectConverter.toDTO(subject)).thenReturn(subjectDTO1);
+        Mockito.when(subjectConverter.toEntity(subjectDTO1)).thenReturn(subject);
+
+        SubjectDTO save = subjectService.save(subjectDTO1);
+        Assertions.assertNotNull(save);
+        Assertions.assertEquals(subjectDTO1, save);
+    }
+
+    @Test
+    public void testSaveSubjecAlreadyExists() {
+        Subject subject = new Subject(1l, "Subj 1", 5, null);
+        SubjectDTO subjectDTO = new SubjectDTO();
+        Mockito.when(subjectRepository.findById(subject.getId())).thenReturn(Optional.of(subject));
+        Assertions.assertThrows(Exception.class, () -> subjectService.save(subjectDTO));
+    }
+
 }
