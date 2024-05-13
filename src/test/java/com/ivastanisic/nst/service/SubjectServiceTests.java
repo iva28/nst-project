@@ -274,8 +274,15 @@ public class SubjectServiceTests {
     public void testSaveSubjecAlreadyExists() {
         Subject subject = new Subject(1l, "Subj 1", 5, null);
         SubjectDTO subjectDTO = new SubjectDTO();
-        Mockito.when(subjectRepository.findById(subject.getId())).thenReturn(Optional.of(subject));
+        Mockito.when(subjectRepository.findByName(subject.getName())).thenReturn(Optional.of(subject));
         Assertions.assertThrows(Exception.class, () -> subjectService.save(subjectDTO));
+    }
+
+    @Test
+    public void testSaveSubjecNoDepartment() {
+        DepartmentDTO departmentDTO1 = new DepartmentDTO(null, "Dep 1", "string");
+        SubjectDTO subjectDTO1 = new SubjectDTO(1l, "Subj 1", 5, departmentDTO1);
+        Assertions.assertThrows(Exception.class, () -> subjectService.save(subjectDTO1));
     }
 
 }

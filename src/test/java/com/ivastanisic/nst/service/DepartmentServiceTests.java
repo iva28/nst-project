@@ -210,4 +210,23 @@ public class DepartmentServiceTests {
         Assertions.assertThrows(Exception.class, () -> departmentService.update(new DepartmentDTO(null, null, null)));
     }
 
+    @Test
+    public void testSaveDepartmentWithoutName() {
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, null, "D1");
+        Assertions.assertThrows(Exception.class, () -> departmentService.save(departmentDTO));
+    }
+
+    @Test
+    public void testSaveDepartmentWithoutShortName() {
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "d1", null);
+        Assertions.assertThrows(Exception.class, () -> departmentService.save(departmentDTO));
+    }
+
+    @Test
+    public void testFindDepartmentNonExisting() {
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "D1");
+        Mockito.when(departmentRepository.findById(departmentDTO.getId())).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> departmentService.findById(departmentDTO.getId()));
+    }
+
 }
