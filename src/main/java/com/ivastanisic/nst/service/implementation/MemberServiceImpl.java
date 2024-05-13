@@ -226,8 +226,17 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member memberToUpdate = member.get();
-        final LocalDate endDate = LocalDate.now();
+        List<AcademicTitleHistory> athbyMemberId = academicTitleHistoryRepository.findByMemberId(memberToUpdate.getId());
 
+        if (!athbyMemberId.isEmpty()) {
+            AcademicTitleHistory previousATH = athbyMemberId.get(athbyMemberId.size() - 1);
+            if (previousATH.getEndDate() != null) {
+                previousATH.setEndDate(LocalDate.now());
+                academicTitleHistoryRepository.save(previousATH);
+            }
+        }
+
+        final LocalDate endDate = LocalDate.now();
         AcademicTitleHistory history = new AcademicTitleHistory(
                 null,
                 memberToUpdate.getStartDate(),
