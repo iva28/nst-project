@@ -33,4 +33,20 @@ public class EducationTitleServiceTests {
         Mockito.when(educationTitleRepository.findByNameIgnoreCase(title.getName())).thenReturn(Optional.of(title));
         Assertions.assertThrows(Exception.class, () -> educationTitleService.save(titleDTO));
     }
+
+    @Test
+    public void testSaveEducationTitleSuccess() throws Exception {
+        EducationTitle title = new EducationTitle(1l, "Title");
+        EducationTitleDTO titleDTO = new EducationTitleDTO(1l, "Title");
+
+        Mockito.when(educationTitleRepository.findByNameIgnoreCase(title.getName())).thenReturn(Optional.empty());
+        Mockito.when(educationTitleConverter.toDTO(title)).thenReturn(titleDTO);
+        Mockito.when(educationTitleConverter.toEntity(titleDTO)).thenReturn(title);
+        Mockito.when(educationTitleRepository.save(title)).thenReturn(title);
+
+        EducationTitleDTO save = educationTitleService.save(titleDTO);
+        Assertions.assertNotNull(save);
+        Assertions.assertEquals(titleDTO, save);
+    }
+
 }
