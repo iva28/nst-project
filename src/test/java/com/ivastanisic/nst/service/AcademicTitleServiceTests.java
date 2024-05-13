@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Optional;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -41,6 +42,30 @@ public class AcademicTitleServiceTests {
         List<AcademicTitleDTO> all = academicTitleService.getAll();
         Assertions.assertNotNull(all);
         Assertions.assertEquals(titleDTOS, all);
+    }
+
+    @Test
+    public void testSaveAcademicTitleSuccess() throws Exception {
+        AcademicTitle title1 = new AcademicTitle(1l, "Title 1");
+        AcademicTitleDTO titleDTO1 = new AcademicTitleDTO(1l, "Title 1");
+
+        Mockito.when(academicTitleRepository.findByNameIgnoreCase(title1.getName())).thenReturn(Optional.empty());
+        Mockito.when(academicTitleRepository.save(title1)).thenReturn(title1);
+        Mockito.when(academicTitleConverter.toDTO(title1)).thenReturn(titleDTO1);
+        Mockito.when(academicTitleConverter.toEntity(titleDTO1)).thenReturn(title1);
+
+        AcademicTitleDTO save = academicTitleService.save(titleDTO1);
+        Assertions.assertNotNull(save);
+        Assertions.assertEquals(titleDTO1, save);
+    }
+
+    @Test
+    public void testSaveAcademicTitleFailure() throws Exception {
+        AcademicTitle title1 = new AcademicTitle(1l, "Title 1");
+        AcademicTitleDTO titleDTO1 = new AcademicTitleDTO(1l, "Title 1");
+
+        Mockito.when(academicTitleRepository.findByNameIgnoreCase(title1.getName())).thenReturn(Optional.of(title1));
+        Assertions.assertThrows(Exception.class, () -> academicTitleService.save(titleDTO1));
     }
 
 
