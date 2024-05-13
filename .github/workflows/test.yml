@@ -2,7 +2,7 @@ name: Java Test on Push
 on:
   push:
     branches:
-      - master
+      - test
 jobs:
   build:
     runs-on: ${{ matrix.os }}
