@@ -7,6 +7,7 @@ import com.ivastanisic.nst.repository.AcademicTitleRepository;
 import com.ivastanisic.nst.service.abstraction.AcademicTitleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,6 +69,22 @@ public class AcademicTitleServiceTests {
         Assertions.assertThrows(Exception.class, () -> academicTitleService.save(titleDTO1));
     }
 
+    @Test
+    public void testDeleteAcademicTitleSuccess() throws Exception{
+        AcademicTitle title1 = new AcademicTitle(1l, "Title 1");
+        AcademicTitleDTO titleDTO1 = new AcademicTitleDTO(1l, "Title 1");
+
+        Mockito.when(academicTitleRepository.findById(title1.getId())).thenReturn(Optional.of(title1));
+        academicTitleService.delete(title1.getId());
+        Mockito.verify(academicTitleRepository, Mockito.times(1)).deleteById(title1.getId());
+    }
+
+    @Test
+    public void testDeleteAcademicTitleFailure() throws Exception{
+        AcademicTitle title1 = new AcademicTitle(1l, "Title 1");
+        Mockito.when(academicTitleRepository.findById(title1.getId())).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> academicTitleService.delete(title1.getId()));
+    }
 
 
 }
