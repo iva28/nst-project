@@ -94,4 +94,8 @@ public class MemberController {
     public ResponseEntity<List<MemberDTO>> getAllInactiveMembers() throws Exception {
         return ResponseEntity.ok(memberService.findAllInactiveMembers());
     }
+    @PostMapping("/save/director/secretary")
+    public ResponseEntity<MemberDTO> saveNewDirector(@RequestBody MemberDTO memberDTO) throws Exception {
+        return ResponseEntity.ok(memberService.saveDirectorOrSecretary(memberDTO));
+    }
 }

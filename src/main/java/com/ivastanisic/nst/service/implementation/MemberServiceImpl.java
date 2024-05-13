@@ -40,6 +40,19 @@ public class MemberServiceImpl implements MemberService {
         if (memberDTO == null) {
             throw new Exception("You can't save member without data");
         }
+        if (memberDTO.getRole() == MemberRole.DIRECTOR || memberDTO.getRole() == MemberRole.SECRETARY || memberDTO.getRole() == MemberRole.INACTIVE) {
+            throw new Exception("This is only for saving member with normal roles");
+        }
+
+        if (memberDTO.getFirstName().equals("") || memberDTO.getFirstName().equals("string")) {
+            throw new Exception("Member must have first name");
+        }
+
+        if (memberDTO.getLastName().equals("") || memberDTO.getLastName().equals("string")) {
+            throw new Exception("Member must have last name");
+        }
+
+
         Optional<Member> memberExists = memberRepository.findByFirstNameAndLastNameAndDepartmentShortName(
                 memberDTO.getFirstName(),
                 memberDTO.getLastName(),
@@ -292,7 +305,7 @@ public class MemberServiceImpl implements MemberService {
             oldRoleHolder = memberConverter.toEntity(opposite);
         }
 
-        if (oldRoleHolder != null)  {
+        if (oldRoleHolder != null) {
             MemberRoleHistory history = new MemberRoleHistory(
                     null,
                     MemberRole.valueOf(roleChangeDTO.getRole().toUpperCase()),
@@ -385,6 +398,109 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberDTO> findAllInactiveMembers() throws Exception {
         return memberConverter.listToDTO(memberRepository.findAllInactive());
+    }
+
+    @Override
+    @Transactional
+    public MemberDTO saveDirectorOrSecretary(MemberDTO memberDTO) throws Exception {
+        if (memberDTO == null) {
+            throw new Exception("You can't save director without data");
+        }
+
+        if (memberDTO.getRole() == MemberRole.NORMAL
+                || memberDTO.getRole() == MemberRole.INACTIVE) {
+            throw new Exception("This is only for saving member with director or secretary roles");
+        }
+
+        if (memberDTO.getFirstName().equals("") || memberDTO.getFirstName().equals("string")) {
+            throw new Exception("Director must have first name");
+        }
+
+        if (memberDTO.getLastName().equals("") || memberDTO.getLastName().equals("string")) {
+            throw new Exception("Director must have last name");
+        }
+
+        Optional<Member> memberExists = memberRepository.findByFirstNameAndLastNameAndDepartmentShortName(
+                memberDTO.getFirstName(),
+                memberDTO.getLastName(),
+                memberDTO.getDepartmentDTO().getShortName());
+
+        if (!memberExists.isEmpty()) {
+            throw new Exception("Member already exists, go to different endpoint to update role");
+        }
+
+        if (memberDTO.getStartDate().isBefore(LocalDate.now())) {
+            throw new Exception("Member start date can't be before today's date");
+        }
+
+        DepartmentDTO departmentDTO = departmentService.findByName(memberDTO.getDepartmentDTO().getShortName());
+        if (departmentDTO == null) {
+            throw new Exception("Department doesn't exist");
+        } else {
+            memberDTO.setDepartmentDTO(departmentDTO);
+        }
+
+        AcademicTitleDTO academicTitleDTO = academicTitleService.findByName(memberDTO.getAcademicTitleDTO().getName());
+        if (academicTitleDTO == null) {
+            throw new Exception("Academic title doesn't exist");
+        } else {
+            memberDTO.setAcademicTitleDTO(academicTitleDTO);
+        }
+
+        EducationTitleDTO educationTitleDTO = educationTitleService.findByName(memberDTO.getEducationTitleDTO().getName());
+        if (educationTitleDTO == null) {
+            throw new Exception("Education title doesn't exist");
+        } else {
+            memberDTO.setEducationTitleDTO(educationTitleDTO);
+        }
+
+        ScientificFieldDTO scientificFieldDTO = scientificFieldService.findByName(memberDTO.getScientificFieldDTO().getName());
+        if (scientificFieldDTO == null) {
+            throw new Exception("Scientific field doesn't exist");
+        } else {
+            memberDTO.setScientificFieldDTO(scientificFieldDTO);
+        }
+
+        memberDTO.setAcademicTitleHistoryDTOS(new ArrayList<>());
+
+        Optional<Member> memberWithRole = memberRepository.findByRoleAndDepartmentShortName(
+                MemberRole.valueOf(memberDTO.getRole().toString().toUpperCase()),
+                memberDTO.getDepartmentDTO().getShortName());
+
+        if (memberWithRole.isPresent()) {
+            Member oldDirector = memberWithRole.get();
+
+            MemberRoleHistory history = new MemberRoleHistory(
+                    null,
+                    MemberRole.valueOf(memberDTO.getRole().toString().toUpperCase()),
+                    oldDirector.getStartDate(),
+                    LocalDate.now(),
+                    oldDirector,
+                    oldDirector.getDepartment()
+            );
+
+            memberRoleHistoryRepository.save(history);
+
+            oldDirector.setRole(MemberRole.NORMAL);
+            oldDirector.setStartDate(LocalDate.now());
+
+            memberRepository.save(oldDirector);
+        }
+
+        memberDTO.setRole(MemberRole.DIRECTOR);
+        memberDTO.setStartDate(LocalDate.now());
+
+        Member savedMember = memberRepository.save(memberConverter.toEntity(memberDTO));
+
+        academicTitleHistoryService.save(new AcademicTitleHistoryDTO(
+                -1L,
+                LocalDate.now(),
+                null,
+                savedMember.getId(),
+                memberDTO.getAcademicTitleDTO(),
+                memberDTO.getScientificFieldDTO()));
+
+        return memberConverter.toDTO(savedMember);
     }
 
 

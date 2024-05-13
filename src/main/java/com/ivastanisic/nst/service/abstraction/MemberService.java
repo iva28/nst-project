@@ -27,4 +27,6 @@ public interface MemberService extends DomainService<MemberDTO, Long> {
     MemberDTO findSecretaryForDepartment(String name) throws Exception;
 
     List<MemberDTO> findAllInactiveMembers() throws Exception;
+
+    MemberDTO saveDirectorOrSecretary(MemberDTO memberDTO) throws Exception;
 }
