@@ -24,6 +24,9 @@ public class EducationTitleServiceImpl implements EducationTitleService {
         if (educationTitle.isPresent())
             throw new Exception("Education title with name: " + obj.getName() + " already exists");
 
+        if (obj == null || obj.getName().equals("") || obj.getName().equals("string")) {
+            throw new Exception("Enter valid education title name");
+        }
         EducationTitle savedEducationTitle = educationTitleRepository.save(educationTitleConverter.toEntity(obj));
         return educationTitleConverter.toDTO(savedEducationTitle);
     }
