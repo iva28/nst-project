@@ -27,6 +27,10 @@ public class AcademicTitleServiceImpl implements AcademicTitleService {
         if (existingAcademicTitle.isPresent())
             throw new Exception("Academic title with this name already exist");
 
+        if (obj == null || obj.getName().equals("") || obj.getName().equals("string")) {
+            throw new Exception("Enter valid academic title name");
+        }
+
         AcademicTitle academicTitle = academicTitleConverter.toEntity(obj);
         return academicTitleConverter.toDTO(academicTitleRepository.save(academicTitle));
     }
@@ -67,4 +71,6 @@ public class AcademicTitleServiceImpl implements AcademicTitleService {
 
         return academicTitleConverter.toDTO(academicTitleRepository.findByNameIgnoreCase(name).get());
     }
+
+
 }

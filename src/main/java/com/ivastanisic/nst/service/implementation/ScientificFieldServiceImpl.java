@@ -23,6 +23,10 @@ public class ScientificFieldServiceImpl implements ScientificFieldService {
         Optional<ScientificField> scientificField = scientificFieldRepository.findByNameIgnoreCase(obj.getName());
         if (scientificField.isPresent())
             throw new Exception("Scientific field with name " + obj.getName() + " doesn't exist");
+
+        if (obj == null || obj.getName().equals("") || obj.getName().equals("string")) {
+            throw new Exception("Enter valid scientific field name");
+        }
         ScientificField savedScientificField = scientificFieldRepository.save(scientificFieldConverter.toEntity(obj));
         return scientificFieldConverter.toDTO(savedScientificField);
     }

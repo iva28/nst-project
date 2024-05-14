@@ -2,7 +2,9 @@ package com.ivastanisic.nst.service;
 
 import com.ivastanisic.nst.converter.impl.AcademicTitleConverter;
 import com.ivastanisic.nst.domain.AcademicTitle;
+import com.ivastanisic.nst.domain.ScientificField;
 import com.ivastanisic.nst.dto.AcademicTitleDTO;
+import com.ivastanisic.nst.dto.ScientificFieldDTO;
 import com.ivastanisic.nst.repository.AcademicTitleRepository;
 import com.ivastanisic.nst.service.abstraction.AcademicTitleService;
 import org.junit.jupiter.api.Assertions;
@@ -84,6 +86,26 @@ public class AcademicTitleServiceTests {
         AcademicTitle title1 = new AcademicTitle(1l, "Title 1");
         Mockito.when(academicTitleRepository.findById(title1.getId())).thenReturn(Optional.empty());
         Assertions.assertThrows(Exception.class, () -> academicTitleService.delete(title1.getId()));
+    }
+
+    @Test
+    public void testSaveAcademicTitleInvalidInputEmpty() {
+        AcademicTitle title1 = new AcademicTitle(1l, "Title 1");
+        AcademicTitleDTO titleDTO1 = new AcademicTitleDTO(1l, "");
+
+        Mockito.when(academicTitleConverter.toDTO(title1)).thenReturn(titleDTO1);
+        Mockito.when(academicTitleConverter.toEntity(titleDTO1)).thenReturn(title1);
+        Mockito.when(academicTitleRepository.findByNameIgnoreCase(title1.getName())).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> academicTitleService.save(titleDTO1));
+    }
+
+    @Test
+    public void testSaveAcademicTitleInvalidInput() {
+        AcademicTitle title1 = new AcademicTitle(1l, "Title 1");
+        AcademicTitleDTO titleDTO1 = new AcademicTitleDTO(1l, "string");
+
+        Mockito.when(academicTitleRepository.findByNameIgnoreCase(title1.getName())).thenReturn(Optional.empty());
+        Assertions.assertThrows(Exception.class, () -> academicTitleService.save(titleDTO1));
     }
 
 
