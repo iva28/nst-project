@@ -42,11 +42,11 @@ public class DepartmentController {
         return new ResponseEntity<DepartmentDTO>(departmentService.findById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<DepartmentDTO> updateDepartmentById(@PathVariable Long id, @Valid @RequestBody DepartmentDTO departmentDTO) throws Exception {
-        DepartmentDTO departmentUpdated = departmentService.updateById(id, departmentDTO);
-        return new ResponseEntity<DepartmentDTO>(departmentUpdated, HttpStatus.ACCEPTED);
-    }
+//    @PutMapping("/{id}")
+//    ResponseEntity<DepartmentDTO> updateDepartmentById(@PathVariable Long id, @Valid @RequestBody DepartmentDTO departmentDTO) throws Exception {
+//        DepartmentDTO departmentUpdated = departmentService.updateById(id, departmentDTO);
+//        return new ResponseEntity<DepartmentDTO>(departmentUpdated, HttpStatus.ACCEPTED);
+//    }
     @PatchMapping("/update")
     ResponseEntity<DepartmentDTO> updateDepartment(@RequestBody DepartmentDTO departmentDTO) throws Exception{
         return ResponseEntity.ok(departmentService.update(departmentDTO));
